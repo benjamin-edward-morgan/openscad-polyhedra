@@ -1,4 +1,4 @@
 # openscad-polyhedra
-OpenSCAD library to build more complex parts based on polyhedra, includes geometry for platonic solids.
+Use this openSCAD library to build more complex parts based on polyhedra.
 
-![GitHub Logo](/png/polyhedra.png)
+![Polyhedra](img/polyhedra.png)
