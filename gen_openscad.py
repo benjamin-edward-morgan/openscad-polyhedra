@@ -65,26 +65,33 @@ def facetize(edges):
     # build lookups for vertices
     adjacent_vertices = defaultdict(set)
     for a, b in edges:
-        adjacent_vertices[a] |= {b}
-        adjacent_vertices[b] |= {a}
+        adjacent_vertices[a] |= {b} # identify memberships of points
+        adjacent_vertices[b] |= {a} # identify memberships of points
+    #     print('Adjacent Vertices [a] = {}'.format(adjacent_vertices[a]))
+    #     print('Adjacent Vertices [b] = {}'.format(adjacent_vertices[b]))
+    # print('Adjacent Vertices = {}'.format(adjacent_vertices))
 
     orderless_faces = set()
     adjacent_faces = defaultdict(set)
-    print(adjacent_vertices)
+    # print(adjacent_vertices)
     for a, b in edges:
         # create faces initially with increasing vertex numbers
-        f1, f2 = (tuple(sorted([a, b, c])) for c in adjacent_vertices[a] & adjacent_vertices[b])
+        if adjacent_vertices[a] & adjacent_vertices[b]:
+            f1, f2 = (tuple(sorted([a, b, c])) for c in adjacent_vertices[a] & adjacent_vertices[b])
+        else:
+            continue
+
 
         # print(adjacent_vertices[a], adjacent_vertices[b])
         # for c in adjacent_vertices[a] & adjacent_vertices[b]:
         #     print(a, b, c)
         #     print(tuple(sorted([a, b, c]))
-        print(f1, f2)
+        # print(f1, f2)
 
         orderless_faces |= {f1, f2}
         adjacent_faces[f1] |= {f2}
         adjacent_faces[f2] |= {f1}
-
+    print(orderless_faces)
     # state for BFS
     processed = set()
     to_visit = deque()
@@ -115,14 +122,15 @@ if __name__ == '__main__':
 
     # edges = [(0, 1), (1, 2), (0, 2), (2, 3), (1, 3), (0, 3)]
     edges = [(0, 1), (0, 2), (1, 3), (2, 3), (4, 5), (4, 6), (5, 7), (6, 7), (0, 4), (1, 5), (2, 6), (3, 7)]
+    print('Edges: {}'.format(edges))
 
     # print adjacent vertices, returns defaultdict object
-    adjacent_vertices = get_adjacent_vertices(edges)
+    # adjacent_vertices = get_adjacent_vertices(edges)
     # print('Adjacent Vertices: {}'.format(adjacent_vertices))
 
     # print faces
     x = facetize(edges)
-    print('Faces: {}'.format(map(list, x)))
+    # print('Faces: {}'.format(map(list, x)))
 
 
     # hexahedron
