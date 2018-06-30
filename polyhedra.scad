@@ -1,5 +1,5 @@
 
-polyhedra_examples();
+//polyhedra_examples();
 
 module polyhedra_examples() {
     scale(3){
@@ -48,7 +48,6 @@ module archimedian_solid_examples() {
     translate([4,0,0])
     truncated_cuboctahedron();
 
-    //probably not right 
     translate([-5,4,0])
     snub_cube();
 
@@ -70,6 +69,7 @@ module archimedian_solid_examples() {
 /**********************/
 
 module orient_verts(verts,adjacents,n=1,r=0.1) {
+    echo(vertices=len(verts));
     for(i=[0:len(verts)-1])
     orient_vertex(verts[i],verts[adjacents[i]])
     //for(i=[0,1])
@@ -82,13 +82,18 @@ module orient_verts(verts,adjacents,n=1,r=0.1) {
     circle(r=r/2);
     */
     //mirror([0,1,0])
-    linear_extrude(0.1)
-    text(str(i),font="Consolas",size=0.3,valign="center",halign="center");
+    
+    //linear_extrude(0.1)
+    //text(str(i),font="Consolas",size=0.3,valign="center",halign="center");
+    sphere(r=r,$fn=32);
+    
+
 }
 
 
 
 module show_verts(verts,r=0.1,$fn=32) {
+    echo(vertices=len(verts));
     for(i=[0:len(verts)-1])
     translate(verts[i])
     //sphere(r=r);
@@ -101,12 +106,13 @@ module sample_edge(h=2,r=0.03,$fn=16) {
     linear_extrude(height=h,center=true)
         union() {
             circle(r=r);
-            rotate(-45)
-            square(size=r);
+            //rotate(45)
+            //square(size=r);
         }     
 } 
 
-module show_edges(verts, edges,r=0.03,$fn=16) {
+module show_edges(verts, edges,r=0.06,$fn=16) {
+    echo(edges=len(edges));
     for(i=[0:len(edges)-1]) {
         a = verts[edges[i][0]];
         b = verts[edges[i][1]];        
@@ -169,7 +175,8 @@ polyhedraZeta = sqrt(2)-1;
 polyhedraR2P1 = sqrt(2)+1;
 polyhedra2R2P1 = 2*sqrt(2)+1;
 polyhedraTribConst = 1.839286755214161;
-
+polyhedraSnubCubeBeta = pow(26+6*sqrt(33), 1/3);
+polyhedraSnubCubeAlpha = sqrt(4/3-16/3/polyhedraSnubCubeBeta+2*polyhedraSnubCubeBeta/3);
 
 /**********************/
 /**Polyhedra examples**/
@@ -262,8 +269,8 @@ octahedron_edges =
 octahedron_adjacent_vertices = 
   [2,3,4,4,3,1];
 
-
-//dodecahedron();
+scale(30)
+dodecahedron();
 module dodecahedron() {
   color("darkorchid")
   orient_verts(dodecahedron_vertices,dodecahedron_adjacent_vertices,3); 
@@ -691,37 +698,54 @@ module snub_cube() {
     color("blue")
     show_verts(snub_cube_vertices);
     
-    /*
     color("green")
     show_edges(snub_cube_vertices, snub_cube_edges);
-    */
-    
 }
 
 snub_cube_vertices = 
 [
 [ 1, 1/polyhedraTribConst, polyhedraTribConst],
-[ 1, 1/polyhedraTribConst,-polyhedraTribConst],
-[ 1,-1/polyhedraTribConst, polyhedraTribConst],
 [ 1,-1/polyhedraTribConst,-polyhedraTribConst],
-[-1, 1/polyhedraTribConst, polyhedraTribConst],
 [-1, 1/polyhedraTribConst,-polyhedraTribConst],
 [-1,-1/polyhedraTribConst, polyhedraTribConst],
-[-1,-1/polyhedraTribConst,-polyhedraTribConst],
 [ polyhedraTribConst, 1, 1/polyhedraTribConst],
-[ polyhedraTribConst, 1,-1/polyhedraTribConst],
-[ polyhedraTribConst,-1, 1/polyhedraTribConst],
 [ polyhedraTribConst,-1,-1/polyhedraTribConst],
-[-polyhedraTribConst, 1, 1/polyhedraTribConst],
 [-polyhedraTribConst, 1,-1/polyhedraTribConst],
 [-polyhedraTribConst,-1, 1/polyhedraTribConst],
-[-polyhedraTribConst,-1,-1/polyhedraTribConst],
 [ 1/polyhedraTribConst, polyhedraTribConst, 1],
-[ 1/polyhedraTribConst, polyhedraTribConst,-1],
-[ 1/polyhedraTribConst,-polyhedraTribConst, 1],
 [ 1/polyhedraTribConst,-polyhedraTribConst,-1],
-[-1/polyhedraTribConst, polyhedraTribConst, 1],
 [-1/polyhedraTribConst, polyhedraTribConst,-1],
 [-1/polyhedraTribConst,-polyhedraTribConst, 1],
-[-1/polyhedraTribConst,-polyhedraTribConst,-1]
+[ 1/polyhedraTribConst, 1,-polyhedraTribConst],
+[-1/polyhedraTribConst, 1, polyhedraTribConst],
+[ 1/polyhedraTribConst,-1, polyhedraTribConst],
+[-1/polyhedraTribConst,-1,-polyhedraTribConst],
+[ 1, polyhedraTribConst,-1/polyhedraTribConst],
+[-1, polyhedraTribConst, 1/polyhedraTribConst],
+[ 1,-polyhedraTribConst, 1/polyhedraTribConst],
+[-1,-polyhedraTribConst,-1/polyhedraTribConst],
+[ polyhedraTribConst, 1/polyhedraTribConst,-1],
+[-polyhedraTribConst, 1/polyhedraTribConst, 1],
+[ polyhedraTribConst,-1/polyhedraTribConst, 1],
+[-polyhedraTribConst,-1/polyhedraTribConst,-1]
+]/polyhedraSnubCubeAlpha;
+//7:23,21,3,
+snub_cube_edges = 
+[
+[13,0],[0,14],[14,3],[3,13],
+[4,20],[20,5],[5,22],[22,4],
+[8,16],[16,10],[10,17],[17,8],
+[7,23],[23,6],[6,21],[21,7],
+[9,18],[18,11],[11,19],[19,9],
+[1,12],[12,2],[2,15],[15,1],
+[14,22],[22,0],[0,4],[4,8],[8,0],
+[8,13],[13,17],[17,21],[21,13],
+[21,3],[3,7],[7,11],[11,3],
+[11,14],[14,18],[18,22],
+[1,9],[9,15],[15,19],[19,23],[23,15],
+[23,2],[2,6],[6,10],[10,2],
+[10,12],[12,16],[16,20],[20,12],
+[20,1],[1,5],[1,9],[9,5],
+[5,18],[16,4],[6,17],[19,7]
 ];
+
