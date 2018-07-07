@@ -1,7 +1,8 @@
 
 object Main extends App {
   //val pgen = new PolyhedraGenerator("components/tetrahedron_edges.txt")
-  val pgen = new PolyhedraGenerator("components/dodecahedron_edges.txt")
+  //val pgen = new PolyhedraGenerator("components/dodecahedron_edges.txt")
+  val pgen = new PolyhedraGenerator("components/snub_cube_edges.txt")
 }
 
 case class Edge private (a: Int, b: Int) {
@@ -75,26 +76,38 @@ class PolyhedraGenerator(edgesFile: String) {
     map.toMap.mapValues(_.toSet)
   }
 
-  def depthFirstCycleSearch(start: Int, adjacentVerts: Map[Int, Set[Int]], edges: mutable.HashMap[Edge,Seq[Face]]): Face = {
-    val queue = mutable.Queue[Seq[Int]]()
-    queue ++= adjacentVerts(start).map{ i => Seq(i, start)}
-    var cycle = Seq.empty[Int]
-    while(cycle.isEmpty) {
-      val path = queue.dequeue
-      val newPaths =
-        adjacentVerts(path(0))
-          .filterNot(_ == path(1))
-          .map(i => i +: path)
-      val cycleOpt = newPaths.find{
-        path =>
-          path.head == path.last
+  def bfs[T](root: T)(neighbors: Seq[T] => Seq[Seq[T]])(test: Seq[T] => Boolean): Option[Seq[T]] = {
+    val queue = mutable.Queue[Seq[T]]()
+    queue ++= neighbors(Seq(root))
+    var solution = Option.empty[Seq[T]]
+    while(queue.nonEmpty && solution.isEmpty) {
+      val possibleSolution = queue.dequeue()
+      if(test(possibleSolution)) {
+        solution = Some(possibleSolution)
+      } else {
+        queue ++= neighbors(possibleSolution)
       }
-      cycleOpt.foreach{ c =>
-        cycle = c.tail
-      }
-      queue ++= newPaths
     }
-    Face(cycle: _*)
+    return solution
+  }
+
+  def getFirstCycle(start: Int, adjacentVerts: Map[Int, Set[Int]]): Face = {
+    bfs[Int](start){
+      path =>
+        adjacentVerts(path(0))
+          .filter{i =>
+            path.size == 1 || i != path(1)
+          }
+          .map{i =>
+            i +: path
+          }
+          .toSeq
+    }{
+      path =>
+        path.size > 1 && path.head == path.last
+    }.map{
+      cycle => Face(cycle.tail:_*)
+    }.get
   }
 
   def dfCa2(start: Edge, adjacentVerts: Map[Int, Set[Int]], edges: mutable.HashMap[Edge,Seq[Face]], faces: mutable.HashSet[Face]): Face = {
@@ -158,7 +171,7 @@ class PolyhedraGenerator(edgesFile: String) {
   )
   val faces = mutable.HashSet[Face]()
 
-  val firstCycle = depthFirstCycleSearch(0, adjacentVerts, edgeFaces)
+  val firstCycle = getFirstCycle(0, adjacentVerts)
   addFaceToEdges(firstCycle, edgeFaces)
   faces += firstCycle
 

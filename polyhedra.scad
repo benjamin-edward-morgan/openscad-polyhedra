@@ -96,9 +96,9 @@ module show_verts(verts,r=0.1,$fn=32) {
     echo(vertices=len(verts));
     for(i=[0:len(verts)-1])
     translate(verts[i])
-    //sphere(r=r);
-    linear_extrude(0.1)
-    text(str(i),font="Consolas",size=r*2,valign="center",halign="center");
+    sphere(r=r);
+    //linear_extrude(0.1)
+    //text(str(i),font="Consolas",size=r*2,valign="center",halign="center");
 }
 
 //sample_edge(h=1);
@@ -182,6 +182,11 @@ polyhedraSnubCubeAlpha = sqrt(4/3-16/3/polyhedraSnubCubeBeta+2*polyhedraSnubCube
 /**Polyhedra examples**/
 /**********************/
 
+scale(30)
+tetrahedron();
+
+//scale(30)
+//mirror([0,0,1])
 //tetrahedron();
 module tetrahedron() {
   color("brown")    
@@ -190,9 +195,9 @@ module tetrahedron() {
   color("magenta")
   show_edges(tetrahedron_vertices, tetrahedron_edges); 
     
-  color("green")
-  scale(0.5)
-  polyhedron(points=tetrahedron_vertices,faces=tetrahedron_faces);
+  //color("green")
+  //scale(0.5)
+  //polyhedron(points=tetrahedron_vertices,faces=tetrahedron_faces);
     
 }
 
@@ -215,7 +220,7 @@ tetrahedron_faces =
 tetrahedron_adjacent_vertices = 
   [1,2,3,1];
 
-
+//scale(30)
 //hexahedron();
 module hexahedron() {
   color("blue")
@@ -243,7 +248,7 @@ hexahedron_edges =
 hexahedron_adjacent_vertices = 
   [1,3,3,7,5,7,7,6];
 
-
+//scale(30)
 //octahedron();
 module octahedron() {
   color("orangered")
@@ -269,8 +274,8 @@ octahedron_edges =
 octahedron_adjacent_vertices = 
   [2,3,4,4,3,1];
 
-scale(30)
-dodecahedron();
+//scale(30)
+//dodecahedron();
 module dodecahedron() {
   color("darkorchid")
   orient_verts(dodecahedron_vertices,dodecahedron_adjacent_vertices,3); 
@@ -312,7 +317,7 @@ dodecahedron_edges =
 dodecahedron_adjacent_vertices = 
   [11,18,10,10,9,9,8,8,7,11,3,0,5,12,3,0,7,2,1,4];
    
-   
+//scale(30)   
 //icosahedron();
 module icosahedron() {
   color("cadetblue")
@@ -380,6 +385,7 @@ cubeoctahedron_edges =
    [10,6],[6,11],[11,7],[7,10]];
 
 
+//scale(30)
 //icosidodecahedron();
 module icosidodecahedron() {
   color("fuchsia")  
@@ -612,6 +618,7 @@ rhombicuboctahedron_edges =
 [1,3],[3,7],[7,5],[5,1]
 ];
 
+//scale(30)
 //truncated_cuboctahedron();
 module truncated_cuboctahedron() {
     color("blue")
