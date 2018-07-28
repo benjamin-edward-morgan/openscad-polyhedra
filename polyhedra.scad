@@ -96,9 +96,9 @@ module show_verts(verts,r=0.1,$fn=32) {
     echo(vertices=len(verts));
     for(i=[0:len(verts)-1])
     translate(verts[i])
-    sphere(r=r);
-    //linear_extrude(0.1)
-    //text(str(i),font="Consolas",size=r*2,valign="center",halign="center");
+    //sphere(r=r);
+    linear_extrude(0.1)
+    text(str(i),font="Consolas",size=r*2,valign="center",halign="center");
 }
 
 //sample_edge(h=1);
@@ -111,7 +111,7 @@ module sample_edge(h=2,r=0.03,$fn=16) {
         }     
 } 
 
-module show_edges(verts, edges,r=0.06,$fn=16) {
+module show_edges(verts, edges,r=0.01,$fn=16) {
     echo(edges=len(edges));
     for(i=[0:len(edges)-1]) {
         a = verts[edges[i][0]];
@@ -182,12 +182,8 @@ polyhedraSnubCubeAlpha = sqrt(4/3-16/3/polyhedraSnubCubeBeta+2*polyhedraSnubCube
 /**Polyhedra examples**/
 /**********************/
 
-scale(30)
-tetrahedron();
-
 //scale(30)
-//mirror([0,0,1])
-//tetrahedron();
+tetrahedron();
 module tetrahedron() {
   color("brown")    
   orient_verts(tetrahedron_vertices,tetrahedron_adjacent_vertices,3);  
@@ -195,9 +191,9 @@ module tetrahedron() {
   color("magenta")
   show_edges(tetrahedron_vertices, tetrahedron_edges); 
     
-  //color("green")
-  //scale(0.5)
-  //polyhedron(points=tetrahedron_vertices,faces=tetrahedron_faces);
+  color("green")
+  scale(0.5)
+  polyhedron(points=tetrahedron_vertices,faces=tetrahedron_faces);
     
 }
 

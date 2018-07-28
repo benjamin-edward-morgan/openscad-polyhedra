@@ -2,7 +2,8 @@
 object Main extends App {
   //val pgen = new PolyhedraGenerator("components/tetrahedron_edges.txt")
   //val pgen = new PolyhedraGenerator("components/dodecahedron_edges.txt")
-  val pgen = new PolyhedraGenerator("components/snub_cube_edges.txt")
+  //val pgen = new PolyhedraGenerator("components/snub_cube_edges.txt")
+  val pgen = new PolyhedraGenerator("components/truncated_cuboctahedron_edges.txt")
 }
 
 case class Edge private (a: Int, b: Int) {
@@ -76,27 +77,35 @@ class PolyhedraGenerator(edgesFile: String) {
     map.toMap.mapValues(_.toSet)
   }
 
-  def bfs[T](root: T)(neighbors: Seq[T] => Seq[Seq[T]])(test: Seq[T] => Boolean): Option[Seq[T]] = {
+  sealed trait BfsTestResult[+T]
+  case object Continue extends BfsTestResult[Nothing]
+  case object DoNotContinue extends BfsTestResult[Nothing]
+  case class Solution[+T](t: T) extends BfsTestResult[T]
+
+  def bfs[T,S](root: Seq[T])(neighbors: Seq[T] => Seq[Seq[T]])(test: Seq[T] => BfsTestResult[S]): Option[S] = {
     val queue = mutable.Queue[Seq[T]]()
-    queue ++= neighbors(Seq(root))
-    var solution = Option.empty[Seq[T]]
+    queue ++= neighbors(root)
+    var solution = Option.empty[S]
     while(queue.nonEmpty && solution.isEmpty) {
       val possibleSolution = queue.dequeue()
-      if(test(possibleSolution)) {
-        solution = Some(possibleSolution)
-      } else {
-        queue ++= neighbors(possibleSolution)
+      test(possibleSolution) match {
+        case Continue =>
+          queue ++= neighbors(possibleSolution)
+        case DoNotContinue =>
+          {}
+        case Solution(s) =>
+          solution = Some(s)
       }
     }
     return solution
   }
 
   def getFirstCycle(start: Int, adjacentVerts: Map[Int, Set[Int]]): Face = {
-    bfs[Int](start){
+    bfs[Int,Face](Seq(start)){
       path =>
         adjacentVerts(path(0))
           .filter{i =>
-            path.size == 1 || i != path(1)
+            (path.size==1 || i != path(1)) && i != path(0)
           }
           .map{i =>
             i +: path
@@ -104,9 +113,41 @@ class PolyhedraGenerator(edgesFile: String) {
           .toSeq
     }{
       path =>
-        path.size > 1 && path.head == path.last
-    }.map{
-      cycle => Face(cycle.tail:_*)
+        if(path.size > 1 && path.head == path.last)
+          Solution(Face(path.tail:_*))
+        else
+          Continue
+    }.get
+  }
+
+  def getMissingCycle(start: Edge, adjacentVerts: Map[Int, Set[Int]], edges: mutable.HashMap[Edge, Seq[Face]], faces: mutable.HashSet[Face]): Face = {
+    println("get missing cycle: ")
+    println(s"start: ${start}")
+    println(s"edges: ${edges}")
+
+    bfs[Int,Face](Seq(start.a, start.b)){
+      path =>
+        adjacentVerts(path(0))
+          .filter{ nextVert =>
+            //not going back from where we came
+            nextVert != path(1)
+          }
+          .filter{ nextVert =>
+            //edge does not already have two faces
+            edges.get(Edge(nextVert, path(0))).map(_.size<2).getOrElse(true)
+          }
+          .map{ nextVert =>
+            nextVert +: path
+          }.toSeq
+    }{ path =>
+      val closed = path.head == path.last
+      if(closed) {
+        val face = Face(path.tail:_*)
+        if(!faces.contains(face)) {
+          Solution(face)
+        } else DoNotContinue
+      } else
+        Continue
     }.get
   }
 
@@ -183,17 +224,20 @@ class PolyhedraGenerator(edgesFile: String) {
   }
 
   try {
-  var remaining = remainingEdges(edgeFaces).toSeq
-  while(remaining.nonEmpty) {
-    val startEdge = remaining.head
-    val newFace = dfCa2(start = startEdge, adjacentVerts = adjacentVerts, edges = edgeFaces, faces = faces)
-    addFaceToEdges(newFace, edgeFaces)
-    faces += newFace
-    remaining = remainingEdges(edgeFaces).toSeq
+    var remaining = remainingEdges(edgeFaces).toSeq
+    while(remaining.nonEmpty) {
+      val startEdge = remaining.head
+      //val newFace = dfCa2(start = startEdge, adjacentVerts = adjacentVerts, edges = edgeFaces, faces = faces)
+      val newFace = getMissingCycle(start = startEdge, adjacentVerts = adjacentVerts, edges = edgeFaces, faces = faces)
+      addFaceToEdges(newFace, edgeFaces)
+      println(s"new face: ${newFace}")
+      scala.io.StdIn.readLine()
+      faces += newFace
+      remaining = remainingEdges(edgeFaces).toSeq
+    }
+  } catch {
+    case t:Throwable => t.printStackTrace()
   }
-} catch {
-  case t:Throwable => t.printStackTrace()
-}
 
 
   edgeFaces.foreach{
@@ -204,7 +248,7 @@ class PolyhedraGenerator(edgesFile: String) {
   println()
   faces.foreach{
     case f:Face =>
-      println(s"face: ${f}")
+      println(s"face: ${f.vertices.size} - ${f}")
   }
   println(faces.size)
 }
