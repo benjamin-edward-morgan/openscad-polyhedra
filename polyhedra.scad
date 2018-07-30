@@ -61,11 +61,16 @@ module archimedian_solid_examples() {
     translate([10,0,0])
     truncated_icosahedron();
 
+    translate([13,6,0])
+    rhombicosidodecahedron();
+
+    translate([10,-8,0])
+    snub_dodecahedron();
+
 
     /*todo:
-    rhombicosidodecahedron();
+
     truncated_icosidodecahedron();
-    snub_dodecahedron();
     */
    
 }
@@ -1399,3 +1404,334 @@ truncated_icosahedron_hexagon_faces =
 
 truncated_icosahedron_faces = 
 concat(truncated_icosahedron_pentagon_faces, truncated_icosahedron_hexagon_faces);
+
+
+
+//rhombicosidodecahedron();
+module rhombicosidodecahedron() {
+    color("blue")
+    show_vertices(rhombicosidodecahedron_vertices, rhombicosidodecahedron_adjacent_vertices);
+    
+    color("green")
+    show_edges(rhombicosidodecahedron_vertices, rhombicosidodecahedron_edges);
+    
+    color("yellow")
+    show_faces(rhombicosidodecahedron_vertices, rhombicosidodecahedron_triangle_faces);
+
+    color("red")
+    show_faces(rhombicosidodecahedron_vertices, rhombicosidodecahedron_square_faces);
+   
+    color("orange")
+    show_faces(rhombicosidodecahedron_vertices, rhombicosidodecahedron_pentagon_faces);
+    
+    color("white")
+    scale(0.9)
+    polyhedron(points = rhombicosidodecahedron_vertices, faces = rhombicosidodecahedron_faces);  
+}
+
+rhombicosidodecahedron_vertices =
+[[ 1, 1, pow(polyhedraPhi, 3)],
+[ 1, 1,-pow(polyhedraPhi, 3)],
+[ 1,-1, pow(polyhedraPhi, 3)],
+[ 1,-1,-pow(polyhedraPhi, 3)],
+[-1, 1, pow(polyhedraPhi, 3)],
+[-1, 1,-pow(polyhedraPhi, 3)],
+[-1,-1, pow(polyhedraPhi, 3)],
+[-1,-1,-pow(polyhedraPhi, 3)],
+[ pow(polyhedraPhi, 3), 1, 1],
+[ pow(polyhedraPhi, 3), 1,-1],
+[ pow(polyhedraPhi, 3),-1, 1],
+[ pow(polyhedraPhi, 3),-1,-1],
+[-pow(polyhedraPhi, 3), 1, 1],
+[-pow(polyhedraPhi, 3), 1,-1],
+[-pow(polyhedraPhi, 3),-1, 1],
+[-pow(polyhedraPhi, 3),-1,-1],
+[ 1, pow(polyhedraPhi, 3), 1],
+[ 1, pow(polyhedraPhi, 3),-1],
+[ 1,-pow(polyhedraPhi, 3), 1],
+[ 1,-pow(polyhedraPhi, 3),-1],
+[-1, pow(polyhedraPhi, 3), 1],
+[-1, pow(polyhedraPhi, 3),-1],
+[-1,-pow(polyhedraPhi, 3), 1],
+[-1,-pow(polyhedraPhi, 3),-1],
+[ pow(polyhedraPhi, 2), polyhedraPhi, 2*polyhedraPhi],
+[ pow(polyhedraPhi, 2), polyhedraPhi,-2*polyhedraPhi],
+[ pow(polyhedraPhi, 2),-polyhedraPhi, 2*polyhedraPhi],
+[ pow(polyhedraPhi, 2),-polyhedraPhi,-2*polyhedraPhi],
+[-pow(polyhedraPhi, 2), polyhedraPhi, 2*polyhedraPhi],
+[-pow(polyhedraPhi, 2), polyhedraPhi,-2*polyhedraPhi],
+[-pow(polyhedraPhi, 2),-polyhedraPhi, 2*polyhedraPhi],
+[-pow(polyhedraPhi, 2),-polyhedraPhi,-2*polyhedraPhi],
+[ 2*polyhedraPhi, pow(polyhedraPhi, 2), polyhedraPhi],
+[ 2*polyhedraPhi, pow(polyhedraPhi, 2),-polyhedraPhi],
+[ 2*polyhedraPhi,-pow(polyhedraPhi, 2), polyhedraPhi],
+[ 2*polyhedraPhi,-pow(polyhedraPhi, 2),-polyhedraPhi],
+[-2*polyhedraPhi, pow(polyhedraPhi, 2), polyhedraPhi],
+[-2*polyhedraPhi, pow(polyhedraPhi, 2),-polyhedraPhi],
+[-2*polyhedraPhi,-pow(polyhedraPhi, 2), polyhedraPhi],
+[-2*polyhedraPhi,-pow(polyhedraPhi, 2),-polyhedraPhi],
+[ polyhedraPhi, 2*polyhedraPhi, pow(polyhedraPhi, 2)],
+[ polyhedraPhi, 2*polyhedraPhi,-pow(polyhedraPhi, 2)],
+[ polyhedraPhi,-2*polyhedraPhi, pow(polyhedraPhi, 2)],
+[ polyhedraPhi,-2*polyhedraPhi,-pow(polyhedraPhi, 2)],
+[-polyhedraPhi, 2*polyhedraPhi, pow(polyhedraPhi, 2)],
+[-polyhedraPhi, 2*polyhedraPhi,-pow(polyhedraPhi, 2)],
+[-polyhedraPhi,-2*polyhedraPhi, pow(polyhedraPhi, 2)],
+[-polyhedraPhi,-2*polyhedraPhi,-pow(polyhedraPhi, 2)],
+[ (2+polyhedraPhi), 0, pow(polyhedraPhi, 2)],
+[ (2+polyhedraPhi), 0,-pow(polyhedraPhi, 2)],
+[-(2+polyhedraPhi), 0, pow(polyhedraPhi, 2)],
+[-(2+polyhedraPhi), 0,-pow(polyhedraPhi, 2)],
+[ pow(polyhedraPhi, 2), (2+polyhedraPhi), 0],
+[ pow(polyhedraPhi, 2),-(2+polyhedraPhi), 0],
+[-pow(polyhedraPhi, 2), (2+polyhedraPhi), 0],
+[-pow(polyhedraPhi, 2),-(2+polyhedraPhi), 0],
+[ 0, pow(polyhedraPhi, 2), (2+polyhedraPhi)],
+[ 0, pow(polyhedraPhi, 2),-(2+polyhedraPhi)],
+[ 0,-pow(polyhedraPhi, 2), (2+polyhedraPhi)],
+[ 0,-pow(polyhedraPhi, 2),-(2+polyhedraPhi)]]/2;
+
+rhombicosidodecahedron_edges = 
+[[56,40],[40,24],[24,0],[0,56],[24,48],[48,26],
+[26,2],[2,0],[58,2],[26,42],[42,58],[42,18],[18,22],
+[22,46],[46,58],[38,46],[22,55],[38,55],[38,14],
+[14,15],[15,39],[39,55],[12,14],[12,13],[13,15],
+[13,37],[37,54],[54,36],[36,12],[54,20],[20,44],
+[44,36],[44,56],[16,40],[20,16],[28,4],[4,6],[6,30],
+[30,50],[50,28],[6,2],[6,58],[30,46],[30,38],[4,0],
+[4,56],[28,44],[28,36],[50,12],[50,14],[53,34],[34,10],
+[10,11],[11,35],[35,53],[18,53],[42,34],[26,34],[48,10],
+[9,8],[8,32],[32,52],[52,33],[33,9],[11,9],[10,8],[48,8],
+[24,32],[40,32],[16,52],[21,17],[17,41],[41,57],[57,45],
+[45,21],[33,41],[17,52],[17,16],[21,20],[54,21],
+[37,45],[51,29],[29,5],[5,7],[7,31],[31,51],[5,57],
+[29,45],[29,37],[13,51],[15,51],[39,31],[59,43],[43,19],
+[19,23],[23,47],[47,59],[7,59],[31,47],[39,47],[55,23],
+[22,23],[18,19],[53,19],[43,35],[1,25],[25,49],[49,27],
+[27,3],[3,1],[49,9],[49,11],[25,33],[25,41],[1,57],[1,5],
+[3,59],[3,7],[27,43],[27,35]];
+
+rhombicosidodecahedron_adjacent_vertices = 
+[[56,2,24,4],[5,3,57,25],[0,6,58,26],[27,1,7,59],
+[0,56,6,28],[1,57,7,29],[30,2,4,58],[31,5,3,59],
+[48,9,32,10],[33,49,11,8],[48,34,11,8],[9,49,35,10],
+[13,50,36,14],[15,12,51,37],[15,12,38,50],[51,13,39,14],
+[52,20,17,40],[52,16,21,41],[19,53,42,22],[53,18,43,23],
+[16,21,54,44],[45,20,17,54],[46,18,55,23],[19,22,55,47],
+[0,48,32,40],[33,1,49,41],[48,34,2,42],[49,35,3,43],
+[50,36,4,44],[51,45,37,5],[46,38,50,6],[51,39,7,47],
+[52,24,40,8],[9,52,25,41],[53,42,10,26],[27,53,43,11],
+[12,54,28,44],[45,13,54,29],[30,46,55,14],[15,31,55,47],
+[16,56,32,24],[33,17,57,25],[34,18,58,26],[27,19,35,59],
+[20,56,36,28],[37,57,21,29],[30,38,22,58],[31,39,23,59],
+[24,10,26,8],[27,9,25,11],[30,12,28,14],[15,31,13,29],
+[33,16,17,32],[19,34,35,18],[37,20,21,36],[38,39,22,23],
+[0,40,4,44],[45,1,5,41],[46,2,42,6],[3,43,7,47]];
+
+rhombicosidodecahedron_triangle_faces = 
+[[32,24,40],[52,16,17],[21,20,54],[44,28,36],[56,0,4],
+[2,58,6],[26,34,42],[46,38,30],[50,14,12],[15,51,13],
+[37,29,45],[57,5,1],[41,25,33],[48,8,10],[9,49,11],
+[27,43,35],[53,19,18],[3,7,59],[47,31,39],[22,23,55]];
+
+rhombicosidodecahedron_square_faces = 
+[[23,22,18,19],[18,42,34,53],[34,26,48,10],
+[48,24,32,8],[32,40,16,52],[16,20,21,17],
+[21,54,37,45],[37,13,51,29],[51,15,39,31],
+[39,55,23,47],[55,38,46,22],[46,30,6,58],
+[6,4,0,2],[0,56,40,24],[52,17,41,33],
+[41,57,1,25],[1,5,7,3],[7,31,47,59],
+[33,25,49,9],[49,27,35,11],[35,43,19,53],
+[38,14,50,30],[50,12,36,28],[36,54,20,44],
+[44,56,4,28],[2,26,42,58],[59,43,27,3],
+[29,5,57,45],[15,13,12,14],[10,8,9,11]];
+
+rhombicosidodecahedron_pentagon_faces = 
+[[46,58,42,18,22],[53,34,10,11,35],[41,17,21,45,57],
+[54,36,12,13,37],[4,6,30,50,28],[0,24,48,26,2],
+[25,1,3,27,49],[5,29,51,31,7],[14,38,55,39,15],
+[23,47,59,43,19],[9,8,32,52,33],[40,56,44,20,16]];
+
+rhombicosidodecahedron_faces = 
+concat(rhombicosidodecahedron_triangle_faces, 
+rhombicosidodecahedron_square_faces, 
+rhombicosidodecahedron_pentagon_faces);
+
+
+//snub_dodecahedron();
+module snub_dodecahedron() {
+    color("blue")
+    show_vertices(snub_dodecahedron_vertices, snub_dodecahedron_adjacent_vertices);
+    
+    color("green")
+    show_edges(snub_dodecahedron_vertices, snub_dodecahedron_edges);
+    
+    color("red")
+    show_faces(snub_dodecahedron_vertices, snub_dodecahedron_triangle_faces);
+
+    color("yellow")
+    show_faces(snub_dodecahedron_vertices, snub_dodecahedron_pentagon_faces);
+    
+    color("white")
+    scale(0.9)
+    polyhedron(points = snub_dodecahedron_vertices, faces = snub_dodecahedron_faces);
+}
+
+polyhedraSDx = pow((polyhedraPhi + sqrt(polyhedraPhi-5/27))/2, 1/3) + pow((polyhedraPhi - sqrt(polyhedraPhi-5/27))/2, 1/3);
+polyhedraSDc0  = polyhedraPhi * sqrt(3 - pow(polyhedraSDx,2)) / 2;
+polyhedraSDc1  = polyhedraSDx * polyhedraPhi * sqrt(3 - pow(polyhedraSDx,2)) / 2;
+polyhedraSDc2  = polyhedraPhi * sqrt((polyhedraSDx - 1 - (1/polyhedraSDx)) * polyhedraPhi) / 2;
+polyhedraSDc3  = pow(polyhedraSDx,2) * polyhedraPhi * sqrt(3 - pow(polyhedraSDx,2)) / 2;
+polyhedraSDc4  = polyhedraSDx * polyhedraPhi * sqrt((polyhedraSDx - 1 - (1/polyhedraSDx)) * polyhedraPhi) / 2;
+polyhedraSDc5  = polyhedraPhi * sqrt(1 - polyhedraSDx + (polyhedraPhi + 1) / polyhedraSDx) / 2;
+polyhedraSDc6  = polyhedraPhi * sqrt(polyhedraSDx - polyhedraPhi + 1) / 2;
+polyhedraSDc7  = pow(polyhedraSDx,2) * polyhedraPhi * sqrt((polyhedraSDx - 1 - (1/polyhedraSDx)) * polyhedraPhi) / 2;
+polyhedraSDc8  = polyhedraSDx * polyhedraPhi * sqrt(1 - polyhedraSDx + (polyhedraPhi + 1) / polyhedraSDx) / 2;
+polyhedraSDc9  = sqrt((polyhedraSDx + 2) * polyhedraPhi + 2) / 2;
+polyhedraSDc10 = polyhedraSDx * sqrt(polyhedraSDx * (polyhedraPhi + 1) - polyhedraPhi) / 2;
+polyhedraSDc11 = sqrt(pow(polyhedraSDx,2) * (2 * polyhedraPhi + 1) - polyhedraPhi) / 2;
+polyhedraSDc12 = polyhedraPhi * sqrt(pow(polyhedraSDx,2) + polyhedraSDx) / 2;
+polyhedraSDc13 = pow(polyhedraPhi,2) * sqrt(polyhedraSDx * (polyhedraSDx + polyhedraPhi) + 1) / (2 * polyhedraSDx);
+polyhedraSDc14 = polyhedraPhi * sqrt(polyhedraSDx * (polyhedraSDx + polyhedraPhi) + 1) / 2;
+
+snub_dodecahedron_vertices = 
+[[ polyhedraSDc2, polyhedraSDc1,-polyhedraSDc14],
+[ polyhedraSDc2,-polyhedraSDc1, polyhedraSDc14],
+[-polyhedraSDc2, polyhedraSDc1, polyhedraSDc14],
+[-polyhedraSDc2,-polyhedraSDc1,-polyhedraSDc14],
+[ polyhedraSDc14, polyhedraSDc2,-polyhedraSDc1],
+[ polyhedraSDc14,-polyhedraSDc2, polyhedraSDc1],
+[-polyhedraSDc14, polyhedraSDc2, polyhedraSDc1],
+[-polyhedraSDc14,-polyhedraSDc2,-polyhedraSDc1],
+[ polyhedraSDc1, polyhedraSDc14,-polyhedraSDc2],
+[ polyhedraSDc1,-polyhedraSDc14, polyhedraSDc2],
+[-polyhedraSDc1, polyhedraSDc14, polyhedraSDc2],
+[-polyhedraSDc1,-polyhedraSDc14,-polyhedraSDc2],
+[ polyhedraSDc0, polyhedraSDc8,-polyhedraSDc12],
+[ polyhedraSDc0,-polyhedraSDc8, polyhedraSDc12],
+[-polyhedraSDc0, polyhedraSDc8, polyhedraSDc12],
+[-polyhedraSDc0,-polyhedraSDc8,-polyhedraSDc12],
+[ polyhedraSDc12, polyhedraSDc0,-polyhedraSDc8],
+[ polyhedraSDc12,-polyhedraSDc0, polyhedraSDc8],
+[-polyhedraSDc12, polyhedraSDc0, polyhedraSDc8],
+[-polyhedraSDc12,-polyhedraSDc0,-polyhedraSDc8],
+[ polyhedraSDc8, polyhedraSDc12,-polyhedraSDc0],
+[ polyhedraSDc8,-polyhedraSDc12, polyhedraSDc0],
+[-polyhedraSDc8, polyhedraSDc12, polyhedraSDc0],
+[-polyhedraSDc8,-polyhedraSDc12,-polyhedraSDc0],
+[ polyhedraSDc7, polyhedraSDc6,-polyhedraSDc11],
+[ polyhedraSDc7,-polyhedraSDc6, polyhedraSDc11],
+[-polyhedraSDc7, polyhedraSDc6, polyhedraSDc11],
+[-polyhedraSDc7,-polyhedraSDc6,-polyhedraSDc11],
+[ polyhedraSDc11, polyhedraSDc7,-polyhedraSDc6],
+[ polyhedraSDc11,-polyhedraSDc7, polyhedraSDc6],
+[-polyhedraSDc11, polyhedraSDc7, polyhedraSDc6],
+[-polyhedraSDc11,-polyhedraSDc7,-polyhedraSDc6],
+[ polyhedraSDc6, polyhedraSDc11,-polyhedraSDc7],
+[ polyhedraSDc6,-polyhedraSDc11, polyhedraSDc7],
+[-polyhedraSDc6, polyhedraSDc11, polyhedraSDc7],
+[-polyhedraSDc6,-polyhedraSDc11,-polyhedraSDc7],
+[ polyhedraSDc3, polyhedraSDc4, polyhedraSDc13],
+[ polyhedraSDc3,-polyhedraSDc4,-polyhedraSDc13],
+[-polyhedraSDc3, polyhedraSDc4,-polyhedraSDc13],
+[-polyhedraSDc3,-polyhedraSDc4, polyhedraSDc13],
+[ polyhedraSDc13, polyhedraSDc3, polyhedraSDc4],
+[ polyhedraSDc13,-polyhedraSDc3,-polyhedraSDc4],
+[-polyhedraSDc13, polyhedraSDc3,-polyhedraSDc4],
+[-polyhedraSDc13,-polyhedraSDc3, polyhedraSDc4],
+[ polyhedraSDc4, polyhedraSDc13, polyhedraSDc3],
+[ polyhedraSDc4,-polyhedraSDc13,-polyhedraSDc3],
+[-polyhedraSDc4, polyhedraSDc13,-polyhedraSDc3],
+[-polyhedraSDc4,-polyhedraSDc13, polyhedraSDc3],
+[ polyhedraSDc9, polyhedraSDc5, polyhedraSDc10],
+[ polyhedraSDc9,-polyhedraSDc5,-polyhedraSDc10],
+[-polyhedraSDc9, polyhedraSDc5,-polyhedraSDc10],
+[-polyhedraSDc9,-polyhedraSDc5, polyhedraSDc10],
+[ polyhedraSDc10, polyhedraSDc9, polyhedraSDc5],
+[ polyhedraSDc10,-polyhedraSDc9,-polyhedraSDc5],
+[-polyhedraSDc10, polyhedraSDc9,-polyhedraSDc5],
+[-polyhedraSDc10,-polyhedraSDc9, polyhedraSDc5],
+[ polyhedraSDc5, polyhedraSDc10, polyhedraSDc9],
+[ polyhedraSDc5,-polyhedraSDc10,-polyhedraSDc9],
+[-polyhedraSDc5, polyhedraSDc10,-polyhedraSDc9],
+[-polyhedraSDc5,-polyhedraSDc10, polyhedraSDc9]];
+
+
+snub_dodecahedron_edges = 
+[[30,26],[26,2],[2,1],[1,25],[25,29],
+[39,13],[13,33],[33,21],[30,18],[18,51],[51,59],
+[6,43],[43,55],[55,47],[47,9],[9,21],
+[30,22],[22,46],[21,53],[53,49],
+[56,48],[48,17],[17,29],[29,21],[21,45],
+[33,29],[29,5],[5,4],[4,28],[28,32],
+[17,5],[5,41],[41,49],[49,37],[37,3],
+[23,11],[11,45],[45,53],[53,41],[41,4],
+[25,33],[33,9],[9,11],[11,35],[35,27],
+[55,59],[59,13],[13,25],[25,17],[17,40],
+[11,47],[47,59],[59,39],[39,2],[2,14],
+[13,1],[1,36],[36,56],[56,44],[44,8],
+[16,4],[4,40],[40,48],[48,36],[36,2],
+[1,39],[39,51],[51,43],[43,7],[7,19],
+[52,56],[56,14],[14,26],[26,18],[18,43],
+[36,14],[14,34],[34,22],[22,54],[54,50],
+[26,34],[34,10],[10,8],[8,32],[32,24],
+[22,10],[10,44],[44,52],[52,40],[40,5],
+[48,52],[52,20],[20,32],[32,12],[12,38],
+[18,6],[6,42],[42,50],[50,38],[38,0],
+[34,30],[30,6],[6,7],[7,31],[31,35],
+[51,55],[55,23],[23,35],[35,15],[15,37],
+[47,23],[23,31],[31,19],[19,50],[50,58],
+[9,45],[45,57],[57,37],[37,0],[0,12],
+[42,19],[19,27],[27,15],[15,57],[57,53],
+[31,27],[27,3],[3,0],[0,24],[24,28],
+[15,3],[3,38],[38,58],[58,46],[46,10],
+[7,42],[42,54],[54,46],[46,8],[8,20],
+[44,20],[20,28],[28,16],[16,49],[49,57],
+[41,16],[16,24],[24,12],[12,58],[58,54]];
+
+snub_dodecahedron_adjacent_vertices = 
+[[24,37,38,12,3],[25,13,2,39,36],[14,1,39,26,36],
+[0,37,38,27,15],[5,28,41,16,40],[29,41,17,40,4],
+[42,7,18,43,30],[42,6,31,43,19],[10,20,46,32,44],
+[21,33,45,11,47],[46,34,22,44,8],[9,45,35,23,47],
+[0,24,38,32,58],[25,1,33,59,39],[56,2,34,26,36],
+[37,57,27,3,35],[24,28,41,49,4],[5,25,29,48,40],
+[6,43,26,30,51],[42,27,7,50,31],[52,28,32,44,8],
+[29,33,9,53,45],[10,46,34,54,30],[35,31,11,55,47],
+[0,28,32,12,16],[29,1,33,13,17],[14,2,34,18,30],
+[3,35,31,19,15],[24,20,32,16,4],[5,25,21,33,17],
+[6,34,22,18,26],[27,7,35,23,19],[24,20,28,12,8],
+[25,29,21,9,13],[10,14,22,26,30],[27,31,11,23,15],
+[56,14,1,2,48],[0,57,49,3,15],[0,12,3,50,58],
+[1,13,2,59,51],[5,52,17,48,4],[5,53,49,16,4],
+[6,54,7,50,19],[6,7,18,55,51],[10,56,52,20,8],
+[57,21,9,53,11],[10,22,54,8,58],[9,59,11,55,23],
+[56,52,17,40,36],[37,57,53,41,16],[42,38,54,58,19],
+[59,39,18,43,55],[56,20,44,48,40],[57,21,41,45,49],
+[42,46,22,50,58],[59,43,23,51,47],[52,14,44,48,36],
+[37,53,45,49,15],[46,38,12,54,50],[13,39,55,51,47]];
+
+snub_dodecahedron_triangle_faces = 
+[[51,39,59],[39,1,13],[59,39,13],[13,1,25],[55,51,59],[55,43,51],
+[7,6,43],[19,42,7],[43,18,51],[6,18,43],[42,6,7],[50,42,19],
+[50,54,42],[58,54,50],[38,58,50],[12,58,38],[0,12,38],[0,24,12],
+[24,32,12],[24,28,32],[16,28,24],[16,4,28],[16,41,4],[4,41,5],
+[5,40,4],[5,17,40],[5,29,17],[29,25,17],[29,33,25],[33,13,25],
+[1,39,2],[36,1,2],[14,36,2],[56,36,14],[48,36,56],[52,48,56],
+[40,48,52],[40,17,48],[56,44,52],[20,52,44],[20,44,8],[32,20,8],
+[28,20,32],[8,44,10],[8,10,46],[46,10,22],[46,22,54],[46,54,58],
+[10,34,22],[22,34,30],[30,34,26],[30,26,18],[30,18,6],[34,14,26],
+[14,2,26],[49,41,16],[49,53,41],[57,53,49],[57,45,53],[45,21,53],
+[45,9,21],[9,33,21],[21,33,29],[11,9,45],[11,47,9],[23,55,47],
+[47,55,59],[47,11,23],[35,23,11],[31,23,35],[27,31,35],[19,31,27],
+[19,7,31],[37,57,49],[37,15,57],[38,3,0],[3,27,15],[27,35,15],
+[3,15,37],[3,37,0]];
+
+snub_dodecahedron_pentagon_faces = 
+[[14,34,10,44,56],[39,51,18,26,2],[6,42,54,22,30],
+[46,58,12,32,8],[52,20,28,4,40],[36,48,17,25,1],
+[13,33,9,47,59],[7,43,55,23,31],[38,50,19,27,3],
+[37,49,16,24,0],[15,35,11,45,57],[53,21,29,5,41]];
+
+snub_dodecahedron_faces = 
+concat(snub_dodecahedron_triangle_faces, snub_dodecahedron_pentagon_faces);
