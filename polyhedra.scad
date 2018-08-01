@@ -1,5 +1,12 @@
 
-//polyhedra_examples();
+polyhedraEdgeColor = [139/255,224/255,97/255]; //8BE061
+polyhedraVertexColor = [92/255,76/255,77/255]; //5C4C4D
+polyhedraFaceColor1 = [239/255,233/255,106/255]; //EFE96A
+polyhedraFaceColor2 = [233/255,148/255,32/255];//E99420
+polyhedraFaceColor3 = [193/255,75/255,49/255];//C14B31
+polyhedraSolidColor = [135/255,190/255,181/255];//87BEB5
+
+polyhedra_examples();
 
 module polyhedra_examples() {
     scale(3){
@@ -67,12 +74,8 @@ module archimedian_solid_examples() {
     translate([10,-8,0])
     snub_dodecahedron();
 
-
-    /*todo:
-
+    translate([17,-4,0])
     truncated_icosidodecahedron();
-    */
-   
 }
 
 /**********************/
@@ -113,19 +116,19 @@ module show_verts(verts,r=0.1,$fn=32) {
 
 
 module sample_vertex(i,r=0.1) {
-    /*
+    
     linear_extrude(0.1) {
     text(str(i),font="Consolas",size=r,valign="center",halign="center");
     if(i==6 || i==9)
        translate([0,-r*0.7])
        square(size=[r,r/6],center=true);
-    }*/
-    sphere(r=r/3,$fn=32);
+    }
+    //sphere(r=r/3,$fn=32);
     
 }
 
 
-module show_vertices(verts,adjacents,r=0.25) {
+module show_vertices(verts,adjacents,r=0.40) {
     for(i=[0:len(verts)-1])
     orient_vertex(verts[i], verts[adjacents[i][0]]) 
     sample_vertex(i,r=r);
@@ -143,7 +146,7 @@ module sample_edge(h=2,r=0.05,$fn=16) {
         }     
 } 
 
-module show_edges(verts, edges,r=0.02,$fn=16) {
+module show_edges(verts, edges,r=0.03,$fn=16) {
     //echo(edges=len(edges));
     for(i=[0:len(edges)-1]) {
         a = verts[edges[i][0]];
@@ -170,6 +173,37 @@ module sample_face(i,n,r=3,h=0.1,t=0.1) {
           circle($fn=n,r=r-t);
         }
     }
+}
+
+/*
+
+polyhedraEdgeColor = [139,224,97]; //8BE061
+polyhedraVertexColor = [92,76,77]; //5C4C4D
+polyhedraFaceColor1 = [239,233,106]; //EFE96A
+polyhedraFaceColor2 = [233,148,32];//E99420
+polyhedraFaceColor3 = [193,75,49];//C14B31
+polyhedraSolidColor = [135,190,181];//87BEB5
+*/
+
+function concat_all(arrays, i=0, final_array=[]) = len(arrays) <= i ? final_array : concat_all(arrays, i+1, concat(arrays[i], final_array));
+
+module show_polyhedron(vertices, edges, adjacentVertices, facesArray, allFaces) {
+    
+  faceColorArray = [polyhedraFaceColor1, polyhedraFaceColor2, polyhedraFaceColor3];
+    
+  color(polyhedraVertexColor)    
+  show_vertices(vertices,adjacentVertices);  
+
+  color(polyhedraEdgeColor)
+  show_edges(vertices, edges); 
+    
+  for(i=[0:min(len(faceColorArray),len(facesArray))-1])
+      color(faceColorArray[i])
+      show_faces(vertices, facesArray[i]);
+    
+  color(polyhedraSolidColor)
+  scale(0.8)
+  polyhedron(points=vertices,faces=concat_all(facesArray));
 }
 
 function map_verts(verts, face) = [ for(i=[0:len(face)-1]) verts[face[i]] ];
@@ -263,8 +297,9 @@ polyhedraSnubCubeAlpha = sqrt(4/3-16/3/polyhedraSnubCubeBeta+2*polyhedraSnubCube
 //scale(30)
 //tetrahedron();
 module tetrahedron() {
+  /*  
   color("brown")    
-  show_vertices(tetrahedron_vertices,tetrahedron_adjacent_vertices,3);  
+  show_vertices(tetrahedron_vertices,tetrahedron_adjacent_vertices);  
 
   color("magenta")
   show_edges(tetrahedron_vertices, tetrahedron_edges); 
@@ -273,9 +308,10 @@ module tetrahedron() {
   show_faces(tetrahedron_vertices, tetrahedron_faces);
     
   color("green")
-  scale(0.5)
+  scale(0.8)
   polyhedron(points=tetrahedron_vertices,faces=tetrahedron_faces);
-    
+    */
+    show_polyhedron(tetrahedron_vertices,tetrahedron_edges,tetrahedron_adjacent_vertices, [tetrahedron_faces]);
 }
 
 tetrahedron_vertices =
@@ -299,7 +335,7 @@ tetrahedron_faces =
 //hexahedron();
 module hexahedron() {
   color("blue")
-  show_vertices(hexahedron_vertices,hexahedron_adjacent_vertices,3);  
+  show_vertices(hexahedron_vertices,hexahedron_adjacent_vertices);  
 
   color("green")
   show_edges(hexahedron_vertices, hexahedron_edges);
@@ -308,7 +344,7 @@ module hexahedron() {
   show_faces(hexahedron_vertices, hexahedron_faces);
     
   color("tomato")
-  scale(0.5)
+  scale(0.8)
   polyhedron(points=hexahedron_vertices,faces=hexahedron_faces);
     
 }
@@ -351,7 +387,7 @@ hexahedron_adjacent_vertices =
 //octahedron();
 module octahedron() {
   color("orangered")
-  show_vertices(octahedron_vertices,octahedron_adjacent_vertices,4); 
+  show_vertices(octahedron_vertices,octahedron_adjacent_vertices); 
     
   color("khaki")
   show_edges(octahedron_vertices, octahedron_edges);  
@@ -360,7 +396,7 @@ module octahedron() {
   show_faces(octahedron_vertices, octahedron_faces);
     
   color("peachpuff")
-  scale(0.5)  
+  scale(0.8)  
   polyhedron(points=octahedron_vertices,faces=octahedron_faces);
 }
 
@@ -399,7 +435,7 @@ octahedron_faces =
 //dodecahedron();
 module dodecahedron() {
   color("darkorchid")
-  show_vertices(dodecahedron_vertices,dodecahedron_adjacent_vertices,3); 
+  show_vertices(dodecahedron_vertices,dodecahedron_adjacent_vertices); 
       
   color("lightseagreen")
   show_edges(dodecahedron_vertices, dodecahedron_edges);  
@@ -408,7 +444,7 @@ module dodecahedron() {
   show_faces(dodecahedron_vertices, dodecahedron_faces);
     
   color("crimson")
-  scale(0.5)
+  scale(0.9)
   polyhedron(points=dodecahedron_vertices, faces=dodecahedron_faces);
 }
 
@@ -467,7 +503,7 @@ dodecahedron_faces =
 //icosahedron();
 module icosahedron() {
   color("cadetblue")
-  show_vertices(icosahedron_vertices,icosahedron_adjacent_vertices,5); 
+  show_vertices(icosahedron_vertices,icosahedron_adjacent_vertices); 
    
   color("crimson")
   show_edges(icosahedron_vertices, icosahedron_edges);  
@@ -476,7 +512,7 @@ module icosahedron() {
   show_faces(icosahedron_vertices, icosahedron_faces);
     
   color("lemonchiffon")
-  scale(0.75)
+  scale(0.8)
   polyhedron(points=icosahedron_vertices, faces=icosahedron_faces);
 }
    
@@ -1740,24 +1776,36 @@ snub_dodecahedron_faces =
 concat(snub_dodecahedron_triangle_faces, snub_dodecahedron_pentagon_faces);
 
 
-truncated_icosidodecahedron();
+//truncated_icosidodecahedron();
 module truncated_icosidodecahedron() {
+    /*
     color("blue")
-    show_verts(truncated_icosidodecahedron_vertices /*, truncated_icosidodecahedron_adjacent_vertices*/);
+    show_vertices(truncated_icosidodecahedron_vertices , truncated_icosidodecahedron_adjacent_vertices);
     
     color("green")
     show_edges(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_edges);
-    /*
+    
     color("red")
     show_faces(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_square_faces);
     
     color("yellow")
     show_faces(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_hexagon_faces);
+
+    color("orange")
+    show_faces(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_decagon_faces);
     
     color("white")
     scale(0.9)
-    polyhedron(points = truncated_icosidodecahedron_vertices, faces = truncated_icosidodecahedron_faces);
-    */
+    polyhedron(points = truncated_icosidodecahedron_vertices, faces = truncated_icosidodecahedron_faces);*/
+    
+    show_polyhedron(
+        truncated_icosidodecahedron_vertices,
+        truncated_icosidodecahedron_edges,
+        truncated_icosidodecahedron_adjacent_vertices,
+        [truncated_icosidodecahedron_square_faces,
+        truncated_icosidodecahedron_hexagon_faces,
+        truncated_icosidodecahedron_decagon_faces]);
+ 
 }
 
 truncated_icosidodecahedron_vertices = 
@@ -1885,8 +1933,7 @@ truncated_icosidodecahedron_vertices =
 
 
 truncated_icosidodecahedron_edges = 
-[
-[0,24],[24,72],[72,104],[104,56],[56,58],[58,106],[106,74],[74,26],[26,2],[2,0],
+[[0,24],[24,72],[72,104],[104,56],[56,58],[58,106],[106,74],[74,26],[26,2],[2,0],
 [4,6],[6,30],[30,78],[78,110],[110,62],[62,60],[60,108],[108,76],[76,28],[28,4],
 [102,54],[54,50],[50,98],[98,90],[90,42],[42,18],[18,22],[22,46],[46,94],[94,102],
 [114,82],[82,34],[34,10],[10,11],[11,35],[35,83],[83,115],[115,67],[67,66],[66,114],
@@ -1897,5 +1944,72 @@ truncated_icosidodecahedron_edges =
 [51,55],[55,103],[103,95],[95,47],[47,23],[23,19],[19,43],[43,91],[91,99],[99,51],
 [73,25],[25,1],[1,3],[3,27],[27,75],[75,107],[107,59],[59,57],[57,105],[105,73],
 [109,61],[61,63],[63,111],[111,79],[79,31],[31,7],[7,5],[5,29],[29,77],[77,109],
-[21,45],[45,93],[93,101],[101,53],[53,49],[49,97],[97,89],[89,41],[41,17],[17,21]
+[21,45],[45,93],[93,101],[101,53],[53,49],[49,97],[97,89],[89,41],[41,17],[17,21],
+
+[4,0],[6,2],[30,54],[78,102],[110,86],[62,38],[60,36],[108,84],[76,100],[28,52],
+[24,48],[72,96],[104,80],[56,32],[58,34],[106,82],[74,98],[26,50],
+[94,118],[70,46],[22,23],[18,19],[42,66],[90,114],
+[67,43],[115,91],[83,107],[35,59],[11,9],[10,8],
+[33,57],[81,105],[113,89],[41,65],[40,64],[112,88],
+[71,47],[119,95],[87,111],[39,63],[13,15],[12,14],
+[37,61],[85,109],[117,93],[69,45],[68,44],[116,92],
+[77,101],[29,53],[49,25],[97,73],[5,1],[7,3],[31,55],
+[79,103],[51,27],[99,75],[20,21],[16,17]
 ];
+
+truncated_icosidodecahedron_adjacent_vertices = 
+[[2,24,4],[5,3,25],[0,6,26],[27,1,7],[0,6,28],[1,7,29],[30,2,4],
+[31,5,3],[9,32,10],[33,11,8],[34,11,8],[9,35,10],[13,36,14],[15,12,37],
+[15,12,38],[13,39,14],[20,17,40],[16,21,41],[19,42,22],[18,43,23],[16,21,44],
+[45,20,17],[46,18,23],[19,22,47],[0,48,72],[1,49,73],[74,2,50],[51,3,75],
+[52,76,4],[5,53,77],[78,6,54],[79,7,55],[56,80,8],[81,9,57],[82,10,58],
+[83,11,59],[84,12,60],[13,85,61],[86,14,62],[15,63,87],[16,88,64],[89,17,65],
+[66,90,18],[19,67,91],[20,68,92],[21,93,69],[70,22,94],[71,95,23],[96,52,24],
+[53,97,25],[54,98,26],[99,27,55],[48,100,28],[49,101,29],[102,30,50],[51,103,31],
+[104,32,58],[33,105,59],[34,56,106],[107,35,57],[108,36,62],[63,37,109],[60,38,110],
+[111,39,61],[112,40,65],[64,113,41],[114,67,42],[66,115,43],[69,116,44],[117,45,68],
+[118,46,71],[70,119,47],[96,104,24],[105,25,97],[106,26,98],[27,99,107],[100,108,28],
+[101,109,29],[30,102,110],[31,103,111],[32,104,112],[33,105,113],[114,34,106],
+[115,35,107],[36,108,116],[117,37,109],[118,38,110],[119,39,111],[96,40,112],[97,41,113],
+[114,42,98],[99,115,43],[100,44,116],[45,117,101],[102,46,118],[103,119,47],[48,88,72],
+[49,89,73],[74,50,90],[51,75,91],[52,76,92],[53,93,77],[78,54,94],[79,55,95],[56,72,80],
+[81,57,73],[82,74,58],[83,75,59],[84,60,76],[85,61,77],[78,86,62],[63,87,79],[88,64,80],
+[81,89,65],[66,82,90],[67,83,91],[84,68,92],[85,93,69],[70,86,94],[71,87,95]];
+
+truncated_icosidodecahedron_square_faces = 
+[[94,46,70,118],[30,54,102,78],[110,86,38,62],
+[71,47,95,119],[22,18,19,23],[79,103,55,31],
+[39,87,111,63],[12,14,15,13],[85,37,61,109],
+[101,77,29,53],[1,5,7,3],[27,51,99,75],
+[115,91,43,67],[66,42,90,114],[98,50,26,74],
+[2,6,4,0],[52,28,76,100],[108,60,36,84],
+[92,116,68,44],[69,117,93,45],[16,20,21,17],
+[112,88,40,64],[56,104,80,32],[82,106,58,34],
+[10,8,9,11],[83,35,59,107],[33,81,105,57],
+[73,97,49,25],[113,65,41,89],[24,48,96,72]];
+
+truncated_icosidodecahedron_hexagon_faces = 
+[[109,77,101,93,117,85],[37,13,15,39,63,61],[87,119,95,103,79,111],
+[31,55,51,27,3,7],[25,49,53,29,5,1],[73,105,81,113,89,97],
+[41,65,64,40,16,17],[21,20,44,68,69,45],[92,100,76,108,84,116],
+[14,12,36,60,62,38],[47,71,70,46,22,23],[43,19,18,42,66,67],
+[75,99,91,115,83,107],[59,35,11,9,33,57],[114,90,98,74,106,82],
+[10,34,58,56,32,8],[112,80,104,72,96,88],[48,24,0,4,28,52],
+[6,2,26,50,54,30],[78,102,94,118,86,110]];
+
+truncated_icosidodecahedron_decagon_faces = 
+[[0,24,72,104,56,58,106,74,26,2],
+[4,6,30,78,110,62,60,108,76,28],
+[102,54,50,98,90,42,18,22,46,94],
+[114,82,34,10,11,35,83,115,67,66],
+[32,80,112,64,65,113,81,33,9,8],
+[86,118,70,71,119,87,39,15,14,38],
+[68,116,84,36,12,13,37,85,117,69],
+[48,52,100,92,44,20,16,40,88,96],
+[51,55,103,95,47,23,19,43,91,99],
+[73,25,1,3,27,75,107,59,57,105],
+[109,61,63,111,79,31,7,5,29,77],
+[21,45,93,101,53,49,97,89,41,17]];
+
+truncated_icosidodecahedron_faces = 
+concat(truncated_icosidodecahedron_square_faces, truncated_icosidodecahedron_hexagon_faces, truncated_icosidodecahedron_decagon_faces);
