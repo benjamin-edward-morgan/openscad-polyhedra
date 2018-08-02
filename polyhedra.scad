@@ -78,33 +78,8 @@ module archimedian_solid_examples() {
     truncated_icosidodecahedron();
 }
 
-/**********************/
-/**Geodesic functions**/
-/**********************/
-/*
-module orient_verts(verts,adjacents,n=1,r=0.1) {
-    echo(vertices=len(verts));
-    for(i=[0:len(verts)-1])
-    orient_vertex(verts[i],verts[adjacents[i]])
-    //for(i=[0,1])
-    //mirror([0,0,i])
-    
-    for(j=[0:n-1])
-    rotate(j*360/n)
-    linear_extrude(height=3*r,scale=0)
-    translate([r/2,0,0])
-    circle(r=r/2);
-    
-    //mirror([0,1,0])
-    
-    //linear_extrude(0.1)
-    //text(str(i),font="Consolas",size=0.3,valign="center",halign="center");
-    sphere(r=r,$fn=32);
-    
+/**Test util functions**/
 
-}
-
-*/
 module show_verts(verts,r=0.1,$fn=32) {
     echo(vertices=len(verts));
     for(i=[0:len(verts)-1])
@@ -127,14 +102,11 @@ module sample_vertex(i,r=0.1) {
     
 }
 
-
 module show_vertices(verts,adjacents,r=0.40) {
     for(i=[0:len(verts)-1])
     orient_vertex(verts[i], verts[adjacents[i][0]]) 
     sample_vertex(i,r=r);
-
 }
-
 
 //sample_edge(h=1);
 module sample_edge(h=2,r=0.05,$fn=16) {
@@ -175,16 +147,8 @@ module sample_face(i,n,r=3,h=0.1,t=0.1) {
     }
 }
 
-/*
 
-polyhedraEdgeColor = [139,224,97]; //8BE061
-polyhedraVertexColor = [92,76,77]; //5C4C4D
-polyhedraFaceColor1 = [239,233,106]; //EFE96A
-polyhedraFaceColor2 = [233,148,32];//E99420
-polyhedraFaceColor3 = [193,75,49];//C14B31
-polyhedraSolidColor = [135,190,181];//87BEB5
-*/
-
+//really, OpenSCAD ?
 function concat_all(arrays, i=0, final_array=[]) = len(arrays) <= i ? final_array : concat_all(arrays, i+1, concat(arrays[i], final_array));
 
 module show_polyhedron(vertices, edges, adjacentVertices, facesArray, allFaces) {
@@ -217,6 +181,227 @@ module show_faces(verts, faces) {
         sample_face(i=i, n=len(faces[i]), r=r); 
     }
 }
+
+/**********************/
+/**Polyhedra examples**/
+/**********************/
+
+//scale(30)
+//tetrahedron();
+module tetrahedron() {
+    show_polyhedron(
+        tetrahedron_vertices,
+        tetrahedron_edges,
+        tetrahedron_adjacent_vertices,
+        [tetrahedron_faces]
+    );
+}
+
+
+//scale(30)
+//hexahedron();
+module hexahedron() {
+    show_polyhedron(
+        hexahedron_vertices,
+        hexahedron_edges,
+        hexahedron_adjacent_vertices,
+        [hexahedron_faces]
+    );
+}
+
+//scale(30)
+//octahedron();
+module octahedron() {
+    show_polyhedron(
+        octahedron_vertices,
+        octahedron_edges,
+        octahedron_adjacent_vertices,
+        [octahedron_faces]
+    );
+}
+
+//scale(30)
+//dodecahedron();
+module dodecahedron() {
+    show_polyhedron(
+        dodecahedron_vertices,
+        dodecahedron_edges,
+        dodecahedron_adjacent_vertices,
+        [dodecahedron_faces]
+    );
+}
+
+//scale(30)   
+//icosahedron();
+module icosahedron() {
+    show_polyhedron(
+        icosahedron_vertices,
+        icosahedron_edges,
+        icosahedron_adjacent_vertices,
+        [icosahedron_faces]
+    );
+}
+
+
+  
+//cubeoctahedron();
+module cubeoctahedron() {
+    show_polyhedron(
+        cubeoctahedron_vertices,
+        cubeoctahedron_edges,
+        cubeoctahedron_adjacent_vertices,
+        [cubeoctahedron_triangle_faces,
+        cubeoctahedron_square_faces]
+    ); 
+}
+
+
+//scale(30)
+//icosidodecahedron();
+module icosidodecahedron() {
+    show_polyhedron(
+        icosidodecahedron_vertices,
+        icosidodecahedron_edges,
+        icosidodecahedron_adjacent_vertices,
+        [icosidodecahedron_triangle_faces,
+        icosidodecahedron_pentagon_faces]
+    );
+}
+
+//truncated_tetrahedron();
+module truncated_tetrahedron() {
+    show_polyhedron(
+        truncated_tetrahedron_vertices,
+        truncated_tetrahedron_edges,
+        truncated_tetrahedron_adjacent_vertices,
+        [truncated_tetrahedron_triangle_faces,
+        truncated_tetrahedron_hexagon_faces]
+    );
+}
+
+//truncated_hexahedron();
+module truncated_hexahedron() {
+    show_polyhedron(
+        truncated_hexahedron_vertices,
+        truncated_hexahedron_edges,
+        truncated_hexahedron_adjacent_vertices,
+        [truncated_hexahedron_triangle_faces,
+        truncated_hexahedron_octagon_faces]
+    );
+}
+
+//truncated_octahedron();
+module truncated_octahedron() {
+    show_polyhedron(
+        truncated_octahedron_vertices,
+        truncated_octahedron_edges,
+        truncated_octahedron_adjacent_vertices,
+        [truncated_octahedron_square_faces,
+        truncated_octahedron_hexagon_faces]
+    );
+}
+
+
+//rhombicuboctahedron();
+module rhombicuboctahedron() {
+    show_polyhedron(
+        rhombicuboctahedron_vertices,
+        rhombicuboctahedron_edges,
+        rhombicuboctahedron_adjacent_vertices,
+        [rhombicuboctahedron_triangle_faces,
+        rhombicuboctahedron_square_faces]
+    );
+}
+
+//scale(30)
+//truncated_cuboctahedron();
+module truncated_cuboctahedron() {
+    show_polyhedron(
+        truncated_cuboctahedron_vertices,
+        truncated_cuboctahedron_edges,
+        truncated_cuboctahedron_adjacent_vertices,
+        [truncated_cuboctahedron_square_faces,
+        truncated_cuboctahedron_hexagon_faces,
+        truncated_cuboctahedron_octagon_faces]
+    );
+}
+
+//snub_cube();
+module snub_cube() {
+    show_polyhedron(
+        snub_cube_vertices,
+        snub_cube_edges,
+        snub_cube_adjacent_vertices,
+        [snub_cube_triangle_faces,
+        snub_cube_square_faces]
+    );
+}
+
+
+//truncated_dodecahedron();
+module truncated_dodecahedron() {
+    show_polyhedron(
+        truncated_dodecahedron_vertices,
+        truncated_dodecahedron_edges,
+        truncated_dodecahedron_adjacent_vertices,
+        [truncated_dodecahedron_triangle_faces,
+        truncated_dodecahedron_decagon_faces]
+    );
+}
+
+
+//truncated_icosahedron();
+module truncated_icosahedron() {
+    show_polyhedron(
+        truncated_icosahedron_vertices,
+        truncated_icosahedron_edges,
+        truncated_icosahedron_adjacent_vertices,
+        [truncated_icosahedron_pentagon_faces,
+        truncated_icosahedron_hexagon_faces]
+    );
+}
+
+
+//rhombicosidodecahedron();
+module rhombicosidodecahedron() {
+    show_polyhedron(
+      rhombicosidodecahedron_vertices,
+      rhombicosidodecahedron_edges,
+      rhombicosidodecahedron_adjacent_vertices,
+      [rhombicosidodecahedron_triangle_faces,
+      rhombicosidodecahedron_square_faces,
+      rhombicosidodecahedron_pentagon_faces]
+    ); 
+}
+
+//scale(30)
+//snub_dodecahedron();
+module snub_dodecahedron() {
+    show_polyhedron(
+        snub_dodecahedron_vertices,
+        snub_dodecahedron_edges,
+        snub_dodecahedron_adjacent_vertices,
+        [snub_dodecahedron_triangle_faces, 
+        snub_dodecahedron_pentagon_faces]
+    );
+}
+
+//truncated_icosidodecahedron();
+module truncated_icosidodecahedron() {
+    show_polyhedron(
+        truncated_icosidodecahedron_vertices,
+        truncated_icosidodecahedron_edges,
+        truncated_icosidodecahedron_adjacent_vertices,
+        [truncated_icosidodecahedron_square_faces,
+        truncated_icosidodecahedron_hexagon_faces,
+        truncated_icosidodecahedron_decagon_faces]);
+ 
+}
+
+
+/**********************/
+/**Geodesic functions**/
+/**********************/
 
 /*
 - a and b are 3-vectors
@@ -290,29 +475,6 @@ polyhedraTribConst = 1.839286755214161;
 polyhedraSnubCubeBeta = pow(26+6*sqrt(33), 1/3);
 polyhedraSnubCubeAlpha = sqrt(4/3-16/3/polyhedraSnubCubeBeta+2*polyhedraSnubCubeBeta/3);
 
-/**********************/
-/**Polyhedra examples**/
-/**********************/
-
-//scale(30)
-//tetrahedron();
-module tetrahedron() {
-  /*  
-  color("brown")    
-  show_vertices(tetrahedron_vertices,tetrahedron_adjacent_vertices);  
-
-  color("magenta")
-  show_edges(tetrahedron_vertices, tetrahedron_edges); 
-    
-  color("orange")
-  show_faces(tetrahedron_vertices, tetrahedron_faces);
-    
-  color("green")
-  scale(0.8)
-  polyhedron(points=tetrahedron_vertices,faces=tetrahedron_faces);
-    */
-    show_polyhedron(tetrahedron_vertices,tetrahedron_edges,tetrahedron_adjacent_vertices, [tetrahedron_faces]);
-}
 
 tetrahedron_vertices =
   [[1,1,1],
@@ -331,23 +493,6 @@ tetrahedron_faces =
   [[0,2,1],[3,0,1],[1,2,3],[3,2,0]];
   
 
-//scale(30)
-//hexahedron();
-module hexahedron() {
-  color("blue")
-  show_vertices(hexahedron_vertices,hexahedron_adjacent_vertices);  
-
-  color("green")
-  show_edges(hexahedron_vertices, hexahedron_edges);
-    
-  color("orange")
-  show_faces(hexahedron_vertices, hexahedron_faces);
-    
-  color("tomato")
-  scale(0.8)
-  polyhedron(points=hexahedron_vertices,faces=hexahedron_faces);
-    
-}
 
 hexahedron_vertices = 
   [[-1,-1,-1],
@@ -383,22 +528,7 @@ hexahedron_adjacent_vertices =
     [2,7,4],
     [5,6,3]];
 
-//scale(30)
-//octahedron();
-module octahedron() {
-  color("orangered")
-  show_vertices(octahedron_vertices,octahedron_adjacent_vertices); 
-    
-  color("khaki")
-  show_edges(octahedron_vertices, octahedron_edges);  
-    
-  color("rebeccapurple")  
-  show_faces(octahedron_vertices, octahedron_faces);
-    
-  color("peachpuff")
-  scale(0.8)  
-  polyhedron(points=octahedron_vertices,faces=octahedron_faces);
-}
+
 
 octahedron_vertices = 
   [[1,0,0],
@@ -431,22 +561,7 @@ octahedron_faces =
 [5,1,3],
 [5,3,0]];
 
-//scale(30)
-//dodecahedron();
-module dodecahedron() {
-  color("darkorchid")
-  show_vertices(dodecahedron_vertices,dodecahedron_adjacent_vertices); 
-      
-  color("lightseagreen")
-  show_edges(dodecahedron_vertices, dodecahedron_edges);  
-    
-  color("gold")
-  show_faces(dodecahedron_vertices, dodecahedron_faces);
-    
-  color("crimson")
-  scale(0.9)
-  polyhedron(points=dodecahedron_vertices, faces=dodecahedron_faces);
-}
+
 
 dodecahedron_vertices = 
   [[-1,-1,-1],
@@ -499,22 +614,7 @@ dodecahedron_faces =
 [19,0,15,2,17],
 [11,1,14,15,0]];
    
-//scale(30)   
-//icosahedron();
-module icosahedron() {
-  color("cadetblue")
-  show_vertices(icosahedron_vertices,icosahedron_adjacent_vertices); 
-   
-  color("crimson")
-  show_edges(icosahedron_vertices, icosahedron_edges);  
-    
-  color("mediumseagreen")
-  show_faces(icosahedron_vertices, icosahedron_faces);
-    
-  color("lemonchiffon")
-  scale(0.8)
-  polyhedron(points=icosahedron_vertices, faces=icosahedron_faces);
-}
+
    
 icosahedron_vertices = 
   [[0, 1, polyhedraPhi], 
@@ -549,26 +649,7 @@ icosahedron_faces =
 [2,8,9],[2,9,7],[7,9,6],[7,6,11],[11,6,1],
 [11,3,7],[10,3,11],[5,3,10],[5,2,3],[2,7,3]];
   
-  
-//cubeoctahedron();
-module cubeoctahedron() {
-  color("blueviolet")
-  show_vertices(cubeoctahedron_vertices, cubeoctahedron_adjacent_vertices);
-    
-  color("springgreen")
-  show_edges(cubeoctahedron_vertices, cubeoctahedron_edges);  
-    
-  color("magenta")
-  show_faces(cubeoctahedron_vertices, cubeoctahedron_square_faces);
-    
-  color("navy")
-  show_faces(cubeoctahedron_vertices, cubeoctahedron_triangle_faces);
-    
-  color("papayawhip")
-  scale(0.8)
-  polyhedron(points = cubeoctahedron_vertices, faces = cubeoctahedron_faces);  
-    
-}
+
   
 cubeoctahedron_vertices = 
   [[ 1, 1, 0],
@@ -607,26 +688,6 @@ cubeoctahedron_triangle_faces =
 [5,1,8],[8,0,4],[4,2,9],[9,3,5]];
 
 cubeoctahedron_faces = concat(cubeoctahedron_square_faces, cubeoctahedron_triangle_faces);
-
-//scale(30)
-//icosidodecahedron();
-module icosidodecahedron() {
-  color("forestgreen")  
-  show_vertices(icosidodecahedron_vertices, icosidodecahedron_adjacent_vertices);
-
-  color("palegreen")
-  show_edges(icosidodecahedron_vertices, icosidodecahedron_edges);
-    
-  color("yellow")
-  show_faces(icosidodecahedron_vertices, icosidodecahedron_triangle_faces);
-    
-  color("magenta")
-  show_faces(icosidodecahedron_vertices, icosidodecahedron_pentagon_faces);
-    
-  color("darkslateblue")
-  scale(0.9)  
-  polyhedron(points=icosidodecahedron_vertices, faces = icosidodecahedron_faces);
-}
 
 icosidodecahedron_vertices = 
   [[0, 0, polyhedraPhi],
@@ -695,25 +756,7 @@ icosidodecahedron_faces = concat(icosidodecahedron_triangle_faces, icosidodecahe
    
    
    
-//truncated_tetrahedron();
-module truncated_tetrahedron() {
-    color("blue")
-    show_vertices(truncated_tetrahedron_vertices, truncated_tetrahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(truncated_tetrahedron_vertices, truncated_tetrahedron_edges);
-    
-    color("yellow")
-    show_faces(truncated_tetrahedron_vertices, truncated_tetrahedron_triangle_faces);
-    
-    color("red")
-    show_faces(truncated_tetrahedron_vertices, truncated_tetrahedron_hexagon_faces);
-    
-    color("white")
-    scale(0.8)
-    polyhedron(points=truncated_tetrahedron_vertices, faces=truncated_tetrahedron_faces);
-}
-   
+
 truncated_tetrahedron_vertices = 
 [[+3,+1,+1], [+1,+3,+1], [+1,+1,+3],
  [-3,-1,+1], [-1,-3,+1], [-1,-1,+3],
@@ -740,24 +783,7 @@ truncated_tetrahedron_hexagon_faces =
 truncated_tetrahedron_faces = 
 concat(truncated_tetrahedron_triangle_faces, truncated_tetrahedron_hexagon_faces);
 
-//truncated_hexahedron();
-module truncated_hexahedron() {
-    color("blue")
-    show_vertices(truncated_hexahedron_vertices, truncated_hexahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(truncated_hexahedron_vertices, truncated_hexahedron_edges);
-    
-    color("yellow")
-    show_faces(truncated_hexahedron_vertices, truncated_hexahedron_triangle_faces);
-    
-    color("red")
-    show_faces(truncated_hexahedron_vertices, truncated_hexahedron_octagon_faces);
-    
-    color("white")
-    scale(0.8)
-    polyhedron(points = truncated_hexahedron_vertices, faces = truncated_hexahedron_octagon_faces);
-}
+
 
 truncated_hexahedron_vertices = 
 [[ polyhedraZeta, 1, 1],
@@ -821,25 +847,6 @@ truncated_hexahedron_octagon_faces =
 truncated_hexahedron_faces = 
 concat(truncated_hexahedron_triangle_faces, truncated_hexahedron_octagon_faces);
 
-//truncated_octahedron();
-module truncated_octahedron() {
-    color("blue")
-    show_vertices(truncated_octahedron_vertices,truncated_octahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(truncated_octahedron_vertices, truncated_octahedron_edges);
-    
-    color("yellow")
-    show_faces(truncated_octahedron_vertices, truncated_octahedron_square_faces);
-    
-    color("red")
-    show_faces(truncated_octahedron_vertices, truncated_octahedron_hexagon_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = truncated_octahedron_vertices, faces = truncated_octahedron_faces);
-    
-}
 
 truncated_octahedron_vertices = 
 [[2,1,0],[2,-1,0],[2,0,1],[2,0,-1],
@@ -881,24 +888,6 @@ truncated_octahedron_hexagon_faces =
 truncated_octahedron_faces = 
 concat(truncated_octahedron_square_faces, truncated_octahedron_hexagon_faces);
 
-//rhombicuboctahedron();
-module rhombicuboctahedron() {
-    color("blue")
-    show_vertices(rhombicuboctahedron_vertices, rhombicuboctahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(rhombicuboctahedron_vertices, rhombicuboctahedron_edges);
-    
-    color("yellow")
-    show_faces(rhombicuboctahedron_vertices, rhombicuboctahedron_triangle_faces);
-    
-    color("red")
-    show_faces(rhombicuboctahedron_vertices, rhombicuboctahedron_square_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(rhombicuboctahedron_vertices, rhombicuboctahedron_faces);
-}
  
 rhombicuboctahedron_vertices = 
 [
@@ -950,28 +939,7 @@ rhombicuboctahedron_square_faces =
 rhombicuboctahedron_faces = 
 concat(rhombicuboctahedron_triangle_faces, rhombicuboctahedron_square_faces);
 
-//scale(30)
-//truncated_cuboctahedron();
-module truncated_cuboctahedron() {
-    color("blue")
-    show_vertices(truncated_cuboctahedron_vertices, truncated_cuboctahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(truncated_cuboctahedron_vertices, truncated_cuboctahedron_edges);
-    
-    color("yellow")
-    show_faces(truncated_cuboctahedron_vertices, truncated_cuboctahedron_square_faces);
-    
-    color("red")
-    show_faces(truncated_cuboctahedron_vertices, truncated_cuboctahedron_hexagon_faces);
-    
-    color("darkmagenta")
-    show_faces(truncated_cuboctahedron_vertices, truncated_cuboctahedron_octagon_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = truncated_cuboctahedron_vertices, faces = truncated_cuboctahedron_faces);
-}
+
 
 truncated_cuboctahedron_vertices = 
 [
@@ -1069,24 +1037,7 @@ truncated_cuboctahedron_faces =
 concat(truncated_cuboctahedron_square_faces, truncated_cuboctahedron_hexagon_faces, truncated_cuboctahedron_octagon_faces);
 
 
-//snub_cube();
-module snub_cube() {
-    color("blue")
-    show_vertices(snub_cube_vertices, snub_cube_adjacent_vertices);
-    
-    color("green")
-    show_edges(snub_cube_vertices, snub_cube_edges);
-    
-    color("yellow")
-    show_faces(snub_cube_vertices, snub_cube_triangle_faces);
-    
-    color("red")
-    show_faces(snub_cube_vertices, snub_cube_square_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = snub_cube_vertices, faces = snub_cube_faces);
-}
+
 
 snub_cube_vertices = 
 [
@@ -1161,26 +1112,6 @@ snub_cube_faces =
 concat(snub_cube_triangle_faces, snub_cube_square_faces);
 
 
-//truncated_dodecahedron();
-module truncated_dodecahedron() {
-    color("blue")
-    show_vertices(truncated_dodecahedron_vertices, truncated_dodecahedron_adjacent_vertices);
-    
-    
-    color("green")
-    show_edges(truncated_dodecahedron_vertices, truncated_dodecahedron_edges);
-    
-    
-    color("yellow")
-    show_faces(truncated_dodecahedron_vertices, truncated_dodecahedron_triangle_faces);
-    
-    color("red")
-    show_faces(truncated_dodecahedron_vertices, truncated_dodecahedron_decagon_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = truncated_dodecahedron_vertices, faces = truncated_dodecahedron_faces);
-}
 
 truncated_dodecahedron_vertices = 
 [
@@ -1308,24 +1239,6 @@ truncated_dodecahedron_faces =
 concat(truncated_dodecahedron_triangle_faces, truncated_dodecahedron_decagon_faces);
 
 
-//truncated_icosahedron();
-module truncated_icosahedron() {
-    color("blue")
-    show_vertices(truncated_icosahedron_vertices, truncated_icosahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(truncated_icosahedron_vertices, truncated_icosahedron_edges);
-
-    color("yellow")
-    show_faces(truncated_icosahedron_vertices, truncated_icosahedron_pentagon_faces);
-
-    color("red")
-    show_faces(truncated_icosahedron_vertices, truncated_icosahedron_hexagon_faces);
-
-    color("white")
-    scale(0.9)
-    polyhedron(points = truncated_icosahedron_vertices, faces = truncated_icosahedron_faces);  
-}
 
 truncated_icosahedron_vertices = 
 [
@@ -1445,28 +1358,6 @@ truncated_icosahedron_faces =
 concat(truncated_icosahedron_pentagon_faces, truncated_icosahedron_hexagon_faces);
 
 
-
-//rhombicosidodecahedron();
-module rhombicosidodecahedron() {
-    color("blue")
-    show_vertices(rhombicosidodecahedron_vertices, rhombicosidodecahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(rhombicosidodecahedron_vertices, rhombicosidodecahedron_edges);
-    
-    color("yellow")
-    show_faces(rhombicosidodecahedron_vertices, rhombicosidodecahedron_triangle_faces);
-
-    color("red")
-    show_faces(rhombicosidodecahedron_vertices, rhombicosidodecahedron_square_faces);
-   
-    color("orange")
-    show_faces(rhombicosidodecahedron_vertices, rhombicosidodecahedron_pentagon_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = rhombicosidodecahedron_vertices, faces = rhombicosidodecahedron_faces);  
-}
 
 rhombicosidodecahedron_vertices =
 [[ 1, 1, pow(polyhedraPhi, 3)],
@@ -1596,26 +1487,6 @@ concat(rhombicosidodecahedron_triangle_faces,
 rhombicosidodecahedron_square_faces, 
 rhombicosidodecahedron_pentagon_faces);
 
-//scale(30)
-//snub_dodecahedron();
-module snub_dodecahedron() {
-    
-    color("blue")
-    show_vertices(snub_dodecahedron_vertices, snub_dodecahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(snub_dodecahedron_vertices, snub_dodecahedron_edges);
-    
-    color("red")
-    show_faces(snub_dodecahedron_vertices, snub_dodecahedron_triangle_faces);
-    
-    color("yellow")
-    show_faces(snub_dodecahedron_vertices, snub_dodecahedron_pentagon_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = snub_dodecahedron_vertices, faces = snub_dodecahedron_faces);
-}
 
 polyhedraSDx = pow((polyhedraPhi + sqrt(polyhedraPhi-5/27))/2, 1/3) + pow((polyhedraPhi - sqrt(polyhedraPhi-5/27))/2, 1/3);
 polyhedraSDc0  = polyhedraPhi * sqrt(3 - pow(polyhedraSDx,2)) / 2;
@@ -1775,38 +1646,6 @@ snub_dodecahedron_pentagon_faces =
 snub_dodecahedron_faces = 
 concat(snub_dodecahedron_triangle_faces, snub_dodecahedron_pentagon_faces);
 
-
-//truncated_icosidodecahedron();
-module truncated_icosidodecahedron() {
-    /*
-    color("blue")
-    show_vertices(truncated_icosidodecahedron_vertices , truncated_icosidodecahedron_adjacent_vertices);
-    
-    color("green")
-    show_edges(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_edges);
-    
-    color("red")
-    show_faces(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_square_faces);
-    
-    color("yellow")
-    show_faces(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_hexagon_faces);
-
-    color("orange")
-    show_faces(truncated_icosidodecahedron_vertices, truncated_icosidodecahedron_decagon_faces);
-    
-    color("white")
-    scale(0.9)
-    polyhedron(points = truncated_icosidodecahedron_vertices, faces = truncated_icosidodecahedron_faces);*/
-    
-    show_polyhedron(
-        truncated_icosidodecahedron_vertices,
-        truncated_icosidodecahedron_edges,
-        truncated_icosidodecahedron_adjacent_vertices,
-        [truncated_icosidodecahedron_square_faces,
-        truncated_icosidodecahedron_hexagon_faces,
-        truncated_icosidodecahedron_decagon_faces]);
- 
-}
 
 truncated_icosidodecahedron_vertices = 
 [[ 1/polyhedraPhi, 1/polyhedraPhi, (3+polyhedraPhi)],
