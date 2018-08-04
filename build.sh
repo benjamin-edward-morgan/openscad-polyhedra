@@ -5,16 +5,20 @@ openscad -v >/dev/null 2>&1 || {
   exit 1
 }
 
+magick -version >/dev/null 2>&1 || {
+  printf "Please set up ImageMagick. You should be able to do this from your favorite package manager like Homebrew or apt-get."
+  exit 1
+}
+
 function render_png() {
   SHAPE=$1
   FILENAME="img/polyhedra_${SHAPE}.png"
   echo -e "rendering ${FILENAME}"
   openscad \
-    --camera=-5,10,0,55,0,25,160 \
+    --camera=-0,0,0,55,0,25,160 \
     --imgsize=2048,1536 \
-    --projection=ortho \
-    --autocenter \
-    --colorscheme=Starnight \
+    --projection=p \
+    --colorscheme="Tomorrow Night" \
     -D 'SHAPE="${SHAPE}"' \
     -o $FILENAME \
     polyhedra-tests.scad

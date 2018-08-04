@@ -6,132 +6,116 @@ polyhedraFaceColor1 = [178,223,138]/255;
 polyhedraFaceColor2 = [251,154,153]/255;
 polyhedraFaceColor3 = [166,206,227]/255;
 polyhedraSolidColor = [253,191,111]/255;
+polyhedraEnumeratedFont = "Consolas";
+
+polyhedraDisplayMode = "ENUMERATED";
+//polyhedraDisplayMode = "WIREFRAME";
+//polyhedraDisplayMode = "SOLID";
+
+polyhedraDisplayShape = "LAYOUT";
+//polyhedraDisplayShape = "TETRAHEDRON";
+//polyhedraDisplayShape = "TRUNCATED_ICOSIDODECAHRDON";
 
 
-polyhedra_layout();
-module polyhedra_layout() {
-    row1 = [0,1.3,2.8,4.6,6]*2;
-    scale(3) {
-        translate([0,-11,0]){  
-            translate([6,0,0])
-                tetrahedron();
-            translate([3.5,0,0])
-                octahedron();
-            translate([1,0,0])
-                hexahedron();
-            translate([-1.5,0,0])
-                icosahedron();
-            translate([-4.5,0,0])
-                dodecahedron();
-        }
-        
-        translate([0,-6,0]) {
-            translate([6.5,0,0])
-                cubeoctahedron();
-            translate([3.5,0,0])
-                truncated_tetrahedron();
-            translate([0,0,0])
-                 snub_cube();
-            translate([-4,0,0])
-                rhombicuboctahedron();
-            translate([-8,0,0])
-                truncated_hexahedron();
-        }
-        
-        translate([0,0.5,0]) {
-            translate([9,0,0])
-                truncated_octahedron();
-            translate([5,0,0])
-                icosidodecahedron();
-            translate([0.25,0,0])
-                snub_dodecahedron();
-            translate([-5,0,0])
-                rhombicosidodecahedron();
-            translate([-10.75,0,0])
-                truncated_cuboctahedron();
-        }
-         
-         translate([0,10,0]) {
-             translate([6,-2,0])
-                 truncated_icosahedron();
-             translate([-1,0,0])
-                 truncated_dodecahedron();
-             translate([-10,2,0])
-                 truncated_icosidodecahedron();
-         }
-     }
+if(polyhedraDisplayShape=="LAYOUT")
+    scale(3) polyhedra_layout();
+else if(polyhedraDisplayShape=="TETRAHEDRON")
+    scale(30) tetrahedron();
+
+else if(polyhedraDisplayShape=="TRUNCATED_ICOSIDODECAHRDON")
+    scale(6) truncated_icosidodecahedron();
+
+/***************************/
+/** Test component shapes **/
+/***************************/
+
+module underlined_text(text="abc", text_size=0.2) {
+        text(text,font=polyhedraEnumeratedFont,size=text_size,valign="center",halign="center");
+        translate([0,-text_size*0.6*len(text)])
+        square(size=[text_size*0.8,text_size/7],center=true);
 }
 
-/**Test util functions**/
-
-module show_verts(verts,r=0.1,$fn=32) {
-    echo(vertices=len(verts));
-    for(i=[0:len(verts)-1])
-    translate(verts[i])
-    //sphere(r=r);
-    linear_extrude(0.1)
-    text(str(i),font="Consolas",size=r*2,valign="center",halign="center");
-}
-
-module sample_vertex(i,r=0.1) {
+module sample_vertex(i) {
     
-    linear_extrude(0.1) {
-    text(str(i),font="Consolas",size=r,valign="center",halign="center");
-    if(i==6 || i==9)
-       translate([0,-r*0.7])
-       square(size=[r,r/6],center=true);
-    }
-    //sphere(r=r/3,$fn=32);
-}
-
-module show_vertices(verts,adjacents,r=0.40) {
-    for(i=[0:len(verts)-1])
-    orient_vertex(verts[i], verts[adjacents[i][0]]) 
-    sample_vertex(i,r=r);
+    if(polyhedraDisplayMode=="ENUMERATED")
+        rotate(-90)
+        linear_extrude(0.1) 
+        underlined_text(text=str(i));
+    else if(polyhedraDisplayMode=="WIREFRAME")
+        sphere(r=0.1,$fn=32);
 }
 
 //sample_edge(h=1);
-module sample_edge(h=2,r=0.05,$fn=16) {
-    linear_extrude(height=h,center=true)
-        union() {
-            circle(r=r);
-            //rotate(-45)
-            //square(size=r);
-        }     
+module sample_edge(i,h=2,r=0.05,$fn=16) {
+    
+    if(polyhedraDisplayMode=="ENUMERATED")
+        linear_extrude(height=h*0.7,center=true)
+            translate([0.1,0,0])
+            rotate(-90)
+            underlined_text(str(i),text_size=0.1);
+    else if(polyhedraDisplayMode=="WIREFRAME")
+        linear_extrude(height=h,center=true)
+           circle(r=r);
 } 
 
-module show_edges(verts, edges,r=0.03,$fn=16) {
-    //echo(edges=len(edges));
+
+//sample_face(i=140,n=3);
+module sample_face(i,n,r=3,h=0.1,t=0.1) {
+    
+    if(polyhedraDisplayMode=="ENUMERATED")
+        linear_extrude(height=h) {
+            scale(r/20)
+            text(str(i),font="Consolas",size=10,valign="center",halign="center");
+                if(i==6 || i==9)
+           translate([0,-0.4])
+           square(size=[0.6,0.1],center=true);
+            
+            rotate(180/n-90)
+            difference() {
+              circle($fn=n,r=r);
+              circle($fn=n,r=r-t);
+            }
+        }
+}
+
+/***************************************/
+/** Polyhedra demonstration functions **/
+/***************************************/
+
+module show_vertices(verts,adjacents) {
+    for(i=[0:len(verts)-1])
+    orient_vertex(verts[i], verts[adjacents[i][0]]) 
+    sample_vertex(i);
+}
+
+module show_edges(verts, edges,$fn=16) {
     for(i=[0:len(edges)-1]) {
         a = verts[edges[i][0]];
         b = verts[edges[i][1]];        
         
         orient_edge(a,b) {
-            sample_edge(h=norm(a-b),r=r);   
+            sample_edge(i=i,h=norm(a-b));   
         }   
     }
 }
 
-//sample_face(i=140,n=3);
-module sample_face(i,n,r=3,h=0.1,t=0.1) {
-    linear_extrude(height=h) {
-        scale(r/20)
-        text(str(i),font="Consolas",size=10,valign="center",halign="center");
-            if(i==6 || i==9)
-       translate([0,-0.4])
-       square(size=[0.6,0.1],center=true);
-        
-        rotate(180/n-90)
-        difference() {
-          circle($fn=n,r=r);
-          circle($fn=n,r=r-t);
-        }
+function map_verts(verts, face) = 
+[ for(i=[0:len(face)-1]) verts[face[i]] ];
+    
+function sum_verts(verts, i=0, sum=[0,0,0]) = 
+i<len(verts) ? sum_verts(verts, i+1, verts[i] + sum) : sum ;
+
+function concat_all(arrays, i=0, final_array=[]) = 
+len(arrays) <= i ? final_array : concat_all(arrays, i+1, concat(arrays[i], final_array));
+
+module show_faces(verts, faces) {
+    for(i=[0:len(faces)-1]) {
+        center = sum_verts(map_verts(verts,faces[i]))/len(faces[i]) ;
+        r = norm(verts[faces[i][0]] - center) * 0.8;
+        orient_face(verts, faces[i])
+        sample_face(i=i, n=len(faces[i]), r=r); 
     }
 }
-
-
-//really, OpenSCAD ?
-function concat_all(arrays, i=0, final_array=[]) = len(arrays) <= i ? final_array : concat_all(arrays, i+1, concat(arrays[i], final_array));
 
 module show_polyhedron(vertices, edges, adjacentVertices, facesArray, allFaces) {
    
@@ -152,26 +136,65 @@ module show_polyhedron(vertices, edges, adjacentVertices, facesArray, allFaces) 
       color(faceColorArray[i])
       show_faces(vertices, facesArray[i]);
     
+  if(polyhedraDisplayMode=="ENUMERATED")
   color(polyhedraSolidColor)
   scale(0.8)
   polyhedron(points=vertices,faces=concat_all(facesArray));
 }
 
-function map_verts(verts, face) = [ for(i=[0:len(face)-1]) verts[face[i]] ];
-function sum_verts(verts, i=0, sum=[0,0,0]) = i<len(verts) ? sum_verts(verts, i+1, verts[i] + sum) : sum ;
-
-module show_faces(verts, faces) {
-    for(i=[0:len(faces)-1]) {
-        center = sum_verts(map_verts(verts,faces[i]))/len(faces[i]) ;
-        r = norm(verts[faces[i][0]] - center) * 0.8;
-        orient_face(verts, faces[i])
-        sample_face(i=i, n=len(faces[i]), r=r); 
-    }
-}
-
 /**********************/
 /**Polyhedra examples**/
 /**********************/
+
+module polyhedra_layout() {
+    translate([0,-11,0]){  
+        translate([6,0,0])
+            tetrahedron();
+        translate([3.5,0,0])
+            octahedron();
+        translate([1,0,0])
+            hexahedron();
+        translate([-1.5,0,0])
+            icosahedron();
+        translate([-4.5,0,0])
+            dodecahedron();
+    }
+    
+    translate([0,-6,0]) {
+        translate([6.5,0,0])
+            cubeoctahedron();
+        translate([3.5,0,0])
+            truncated_tetrahedron();
+        translate([0,0,0])
+             snub_cube();
+        translate([-4,0,0])
+            rhombicuboctahedron();
+        translate([-8,0,0])
+            truncated_hexahedron();
+    }
+    
+    translate([0,0.5,0]) {
+        translate([9,0,0])
+            truncated_octahedron();
+        translate([5,0,0])
+            icosidodecahedron();
+        translate([0.25,0,0])
+            snub_dodecahedron();
+        translate([-5,0,0])
+            rhombicosidodecahedron();
+        translate([-10.75,0,0])
+            truncated_cuboctahedron();
+    }
+     
+     translate([0,10,0]) {
+         translate([6,-2,0])
+             truncated_icosahedron();
+         translate([-1,0,0])
+             truncated_dodecahedron();
+         translate([-10,2,0])
+             truncated_icosidodecahedron();
+     }
+}
 
 //tetrahedron();
 module tetrahedron() {
