@@ -1,22 +1,23 @@
 #!/bin/bash -e
 
-openscad -v >/dev/null 2>&1 || { 
-  printf "Please set up openscad so that it can be used in this script.\nSee https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_OpenSCAD_in_a_command_line_environment\n" 
+openscad -v >/dev/null 2>&1 || {
+  printf "Please set up openscad so that it can be used in this script.\nSee https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_OpenSCAD_in_a_command_line_environment\n"
   exit 1
 }
 
 function render_png() {
-  SHAPE=$1  
+  SHAPE=$1
   FILENAME="img/polyhedra_${SHAPE}.png"
-  echo -e "rendering ${FILENAME}"  
+  echo -e "rendering ${FILENAME}"
   openscad \
-    --camera=75,75,-75,0,0,0 \
-    --imgsize=1024,768 \
+    --camera=-5,10,0,55,0,25,160 \
+    --imgsize=2048,1536 \
     --projection=ortho \
-    --colorscheme=Tomorrow \
+    --autocenter \
+    --colorscheme=Starnight \
     -D 'SHAPE="${SHAPE}"' \
     -o $FILENAME \
-    polyhedra.scad   
+    polyhedra-tests.scad
 }
 
 function render_stl() {
@@ -26,7 +27,7 @@ function render_stl() {
   openscad \
     -D 'SHAPE="${SHAPE}"' \
     -o $FILENAME \
-    polyhedra.scad 
+    polyhedra-tests.scad
 }
 
 mkdir -p img
@@ -36,6 +37,7 @@ for SHAPE in "all"; do
   render_png $SHAPE
 done
 
-for SHAPE in "all"; do
-  render_stl $SHAPE
-done
+
+##for SHAPE in "all"; do
+##  render_stl $SHAPE
+##done

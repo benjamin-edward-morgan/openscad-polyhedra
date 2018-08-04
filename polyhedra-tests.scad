@@ -1,67 +1,64 @@
 include<polyhedra.scad>;
 
-polyhedraEdgeColor = [139/255,224/255,97/255]; //8BE061
-polyhedraVertexColor = [92/255,76/255,77/255]; //5C4C4D
-polyhedraFaceColor1 = [239/255,233/255,106/255]; //EFE96A
-polyhedraFaceColor2 = [233/255,148/255,32/255];//E99420
-polyhedraFaceColor3 = [193/255,75/255,49/255];//C14B31
-polyhedraSolidColor = [135/255,190/255,181/255];//87BEB5
+polyhedraEdgeColor = [227,26,28]/255;
+polyhedraVertexColor = [31,120,180]/255;
+polyhedraFaceColor1 = [178,223,138]/255;
+polyhedraFaceColor2 = [251,154,153]/255;
+polyhedraFaceColor3 = [166,206,227]/255;
+polyhedraSolidColor = [253,191,111]/255;
+
 
 polyhedra_layout();
 module polyhedra_layout() {
     row1 = [0,1.3,2.8,4.6,6]*2;
     scale(3) {
-        translate([0,-9,0])
-        for(i=[0:4])
-            translate([-row1[i]+6,0,0])
-            if(i==0)
+        translate([0,-11,0]){  
+            translate([6,0,0])
                 tetrahedron();
-            else if(i==1)
+            translate([3.5,0,0])
                 octahedron();
-            else if(i==2)
+            translate([1,0,0])
                 hexahedron();
-            else if(i==3)
+            translate([-1.5,0,0])
                 icosahedron();
-            else if(i==4)
+            translate([-4.5,0,0])
                 dodecahedron();
+        }
         
-        translate([0,-5,0])
-        for(i=[0:4])
-            translate([i*-4+8,0,0])
-            if(i==0)
+        translate([0,-6,0]) {
+            translate([6.5,0,0])
                 cubeoctahedron();
-            else if(i==1)
+            translate([3.5,0,0])
                 truncated_tetrahedron();
-            else if(i==2)
+            translate([0,0,0])
                  snub_cube();
-            else if(i==3)
+            translate([-4,0,0])
                 rhombicuboctahedron();
-            else if(i==4)
+            translate([-8,0,0])
                 truncated_hexahedron();
-
-        translate([0,0,0])
-        for(i=[0:4])
-            translate([i*-5+10,0,0])
-            if(i==0)
+        }
+        
+        translate([0,0.5,0]) {
+            translate([9,0,0])
                 truncated_octahedron();
-            else if(i==1)
+            translate([5,0,0])
                 icosidodecahedron();
-            else if(i==2)
+            translate([0.25,0,0])
                 snub_dodecahedron();
-            else if(i==3)
+            translate([-5,0,0])
                 rhombicosidodecahedron();
-            else if(i==4)
+            translate([-10.75,0,0])
                 truncated_cuboctahedron();
-            
-         translate([0,8,0])   
-         for(i=[0:2])
-             translate([i*-8+8,0,0])
-             if(i==0)
+        }
+         
+         translate([0,10,0]) {
+             translate([6,-2,0])
                  truncated_icosahedron();
-             else if(i==1)
+             translate([-1,0,0])
                  truncated_dodecahedron();
-             else if(i==2)
+             translate([-10,2,0])
                  truncated_icosidodecahedron();
+         }
      }
 }
 
@@ -76,7 +73,6 @@ module show_verts(verts,r=0.1,$fn=32) {
     text(str(i),font="Consolas",size=r*2,valign="center",halign="center");
 }
 
-
 module sample_vertex(i,r=0.1) {
     
     linear_extrude(0.1) {
@@ -86,7 +82,6 @@ module sample_vertex(i,r=0.1) {
        square(size=[r,r/6],center=true);
     }
     //sphere(r=r/3,$fn=32);
-    
 }
 
 module show_vertices(verts,adjacents,r=0.40) {
