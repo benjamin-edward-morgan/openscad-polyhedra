@@ -69,25 +69,25 @@ mkdir -p img
 mkdir -p img/tmp
 mkdir -p stl
 
-#render_gif "tetrahedron" "wireframe"
-#render_gif "octahedron" "wireframe"
-#render_gif "hexahedron" "wireframe"
-#render_gif "icosahedron" "wireframe"
-#render_gif "dodecahedron" "wireframe"
 
-#render_gif "truncated_icosidodecahedron" "wireframe"
+ALLSHAPES=("tetrahedron" "octahedron" "hexahedron" "icosahedron" "dodecahedron" "truncated_icosidodecahedron" "cubeoctahedron" "truncated_tetrahedron" "snub_cube" "rhombicuboctahedron" "truncated_hexahedron" "truncated_octahedron" "icosidodecahedron" "snub_dodecahedron" "rhombicosidodecahedron" "truncated_cuboctahedron" "truncated_icosahedron" "truncated_dodecahedron" "truncated_icosidodecahedron")
 
-ALLSHAPES=("tetrahedron" "octahedron" "hexahedron" "icosahedron" "dodecahedron" "truncated_icosidodecahedron")
-for SHAPE in ${ALLSHAPES[@]}
-do
-   echo $SHAPE
-   render_stl $SHAPE "wireframe"
-   render_stl $SHAPE "solid"
+# for SHAPE in ${ALLSHAPES[@]}
+# do
+#    echo $SHAPE
+#    render_stl $SHAPE "wireframe"
+#    render_stl $SHAPE "solid"
+# done
+
+# for SHAPE in ${ALLSHAPES[@]}
+# do
+#    echo $SHAPE
+#    render_gif $SHAPE "wireframe"
+# done
+
+for SHAPE in "layout"; do
+ render_png $SHAPE "enumerated"
 done
-
-#for SHAPE in "all"; do
-#  render_png $SHAPE
-#done
 
 
 ##for SHAPE in "all"; do

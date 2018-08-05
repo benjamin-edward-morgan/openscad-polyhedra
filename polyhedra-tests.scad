@@ -8,8 +8,8 @@ polyhedraFaceColor3 = [166,206,227]/255;
 polyhedraSolidColor = [253,191,111]/255;
 polyhedraEnumeratedFont = "Consolas";
 
-//polyhedraDisplayMode = "enumerated";
-polyhedraDisplayMode = "wireframe";
+polyhedraDisplayMode = "enumerated";
+//polyhedraDisplayMode = "wireframe";
 //polyhedraDisplayMode = "solid";
 
 polyhedraDisplayShape = "layout";
@@ -18,11 +18,35 @@ polyhedraDisplayShape = "layout";
 //polyhedraDisplayShape = "hexahedron";
 //polyhedraDisplayShape = "icosahedron";
 //polyhedraDisplayShape = "dodecahedron";
-//polyhedraDisplayShape = "";
-//polyhedraDisplayShape = "";
-//polyhedraDisplayShape = "";
-//polyhedraDisplayShape = "";
+//polyhedraDisplayShape = "cubeoctahedron";
+//polyhedraDisplayShape = "truncated_tetrahedron";
+//polyhedraDisplayShape = "snub_cube";
+//polyhedraDisplayShape = "rhombicuboctahedron";
+//polyhedraDisplayShape = "truncated_hexahedron";
+//polyhedraDisplayShape = "truncated_octahedron";
+//polyhedraDisplayShape = "icosidodecahedron";
+//polyhedraDisplayShape = "snub_dodecahedron";
+//polyhedraDisplayShape = "rhombicosidodecahedron";
+//polyhedraDisplayShape = "truncated_cuboctahedron";
+//polyhedraDisplayShape = "truncated_icosahedron";
+//polyhedraDisplayShape = "truncated_dodecahedron";
+//polyhedraDisplayShape = "truncated_icosidodecahedron";
 
+/*
+cubeoctahedron
+truncated_tetrahedron
+snub_cube
+rhombicuboctahedron
+truncated_hexahedron
+truncated_octahedron
+icosidodecahedron
+snub_dodecahedron
+rhombicosidodecahedron
+truncated_cuboctahedron
+truncated_icosahedron
+truncated_dodecahedron
+truncated_icosidodecahedron
+*/
 //polyhedraDisplayShape = "truncated_icosidodecahedron";
 
 echo(polyhedraDisplayShape=polyhedraDisplayShape);
@@ -40,8 +64,33 @@ else if(polyhedraDisplayShape=="icosahedron")
     scale(20) icosahedron();
 else if(polyhedraDisplayShape=="dodecahedron")
     scale(15) dodecahedron();
+else if(polyhedraDisplayShape=="cubeoctahedron")
+    scale(20) cubeoctahedron();
+else if(polyhedraDisplayShape=="truncated_tetrahedron")
+    scale(17) truncated_tetrahedron();
+else if(polyhedraDisplayShape=="snub_cube")
+    scale(14) snub_cube();
+else if(polyhedraDisplayShape=="rhombicuboctahedron")
+    scale(13) rhombicuboctahedron();
+else if(polyhedraDisplayShape=="truncated_hexahedron")
+    scale(12) truncated_hexahedron();
+else if(polyhedraDisplayShape=="truncated_octahedron")
+    scale(12) truncated_octahedron();
+else if(polyhedraDisplayShape=="icosidodecahedron")
+    scale(11) icosidodecahedron();
+else if(polyhedraDisplayShape=="snub_dodecahedron")
+    scale(9) snub_dodecahedron();
+else if(polyhedraDisplayShape=="rhombicosidodecahedron")
+    scale(9) rhombicosidodecahedron();
+else if(polyhedraDisplayShape=="truncated_cuboctahedron")
+    scale(8) truncated_cuboctahedron();
+else if(polyhedraDisplayShape=="truncated_icosahedron")
+    scale(8) truncated_icosahedron();
+else if(polyhedraDisplayShape=="truncated_dodecahedron")
+    scale(7) truncated_dodecahedron();
 else if(polyhedraDisplayShape=="truncated_icosidodecahedron")
     scale(6) truncated_icosidodecahedron();
+else echo(concat("unknown polyhedraDisplayShape: ", polyhedraDisplayName));
 
 /***************************/
 /** Test component shapes **/
