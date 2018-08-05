@@ -8,21 +8,39 @@ polyhedraFaceColor3 = [166,206,227]/255;
 polyhedraSolidColor = [253,191,111]/255;
 polyhedraEnumeratedFont = "Consolas";
 
-polyhedraDisplayMode = "ENUMERATED";
-//polyhedraDisplayMode = "WIREFRAME";
-//polyhedraDisplayMode = "SOLID";
+//polyhedraDisplayMode = "enumerated";
+polyhedraDisplayMode = "wireframe";
+//polyhedraDisplayMode = "solid";
 
-polyhedraDisplayShape = "LAYOUT";
-//polyhedraDisplayShape = "TETRAHEDRON";
-//polyhedraDisplayShape = "TRUNCATED_ICOSIDODECAHRDON";
+polyhedraDisplayShape = "layout";
+//polyhedraDisplayShape = "tetrahedron";
+//polyhedraDisplayShape = "octahedron";
+//polyhedraDisplayShape = "hexahedron";
+//polyhedraDisplayShape = "icosahedron";
+//polyhedraDisplayShape = "dodecahedron";
+//polyhedraDisplayShape = "";
+//polyhedraDisplayShape = "";
+//polyhedraDisplayShape = "";
+//polyhedraDisplayShape = "";
+
+//polyhedraDisplayShape = "truncated_icosidodecahedron";
+
+echo(polyhedraDisplayShape=polyhedraDisplayShape);
 
 
-if(polyhedraDisplayShape=="LAYOUT")
+if(polyhedraDisplayShape=="layout")
     scale(3) polyhedra_layout();
-else if(polyhedraDisplayShape=="TETRAHEDRON")
+else if(polyhedraDisplayShape=="tetrahedron")
     scale(30) tetrahedron();
-
-else if(polyhedraDisplayShape=="TRUNCATED_ICOSIDODECAHRDON")
+else if(polyhedraDisplayShape=="octahedron")
+    scale(30) octahedron();
+else if(polyhedraDisplayShape=="hexahedron")
+    scale(25) hexahedron();
+else if(polyhedraDisplayShape=="icosahedron")
+    scale(20) icosahedron();
+else if(polyhedraDisplayShape=="dodecahedron")
+    scale(15) dodecahedron();
+else if(polyhedraDisplayShape=="truncated_icosidodecahedron")
     scale(6) truncated_icosidodecahedron();
 
 /***************************/
@@ -37,23 +55,23 @@ module underlined_text(text="abc", text_size=0.2) {
 
 module sample_vertex(i) {
     
-    if(polyhedraDisplayMode=="ENUMERATED")
+    if(polyhedraDisplayMode=="enumerated")
         rotate(-90)
         linear_extrude(0.1) 
         underlined_text(text=str(i));
-    else if(polyhedraDisplayMode=="WIREFRAME")
+    else if(polyhedraDisplayMode=="wireframe")
         sphere(r=0.1,$fn=32);
 }
 
 //sample_edge(h=1);
 module sample_edge(i,h=2,r=0.05,$fn=16) {
     
-    if(polyhedraDisplayMode=="ENUMERATED")
+    if(polyhedraDisplayMode=="enumerated")
         linear_extrude(height=h*0.7,center=true)
             translate([0.1,0,0])
             rotate(-90)
             underlined_text(str(i),text_size=0.1);
-    else if(polyhedraDisplayMode=="WIREFRAME")
+    else if(polyhedraDisplayMode=="wireframe")
         linear_extrude(height=h,center=true)
            circle(r=r);
 } 
@@ -62,7 +80,7 @@ module sample_edge(i,h=2,r=0.05,$fn=16) {
 //sample_face(i=140,n=3);
 module sample_face(i,n,r=3,h=0.1,t=0.1) {
     
-    if(polyhedraDisplayMode=="ENUMERATED")
+    if(polyhedraDisplayMode=="enumerated")
         linear_extrude(height=h) {
             scale(r/20)
             text(str(i),font="Consolas",size=10,valign="center",halign="center");
@@ -136,7 +154,7 @@ module show_polyhedron(vertices, edges, adjacentVertices, facesArray, allFaces) 
       color(faceColorArray[i])
       show_faces(vertices, facesArray[i]);
     
-  if(polyhedraDisplayMode=="ENUMERATED")
+  if(polyhedraDisplayMode=="enumerated" || polyhedraDisplayMode=="solid")
   color(polyhedraSolidColor)
   scale(0.8)
   polyhedron(points=vertices,faces=concat_all(facesArray));
