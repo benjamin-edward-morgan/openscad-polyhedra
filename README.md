@@ -32,7 +32,7 @@ snub_dodecahedron_triangle_faces and snub_dodecahedron_pentagon_faces contain ar
 - snub_dodecahedron_adjacent_faces contains all faces.
 
 Usage:
-```
+```OpenSCAD
 //to arrange modules at vertices
 for(i=[0:len(snub_dodecahedron_vertices)-1])
     orient_vertex(
