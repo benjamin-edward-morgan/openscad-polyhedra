@@ -2,6 +2,8 @@
 
 The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedean Solids.
 
+All polyhedra are centered at the origin and have an edge length of 1.
+
 Included polyhedra:
 - tetrahedron
 - octahedron
