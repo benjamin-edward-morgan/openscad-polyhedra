@@ -13,7 +13,7 @@ magick -version >/dev/null 2>&1 || {
 function render_png() {
   SHAPE=$1
   MODE=$2
-  FILENAME="img/polyhedra_${SHAPE}_${MODE}.png"
+  FILENAME="img/${SHAPE}_${MODE}.png"
   echo -e "rendering ${FILENAME}"
   openscad \
     --camera=-0,0,0,55,0,25,160 \

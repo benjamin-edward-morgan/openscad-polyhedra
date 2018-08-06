@@ -1,7 +1,7 @@
 # openscad-polyhedra
 Use this openSCAD library to build more complex parts based on polyhedra.
 
-![Polyhedra](img/polyhedra_layout_enumerated.png)
+![Polyhedra](img/layout_enumerated.png)
 
 [Index](Index.md)
 
