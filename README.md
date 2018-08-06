@@ -28,7 +28,7 @@ Example:
 - snub_dodecahedron_vertices - an array of 3-vectors
 - snub_dodecahedron_edges - an array of 2-tuples containing indexes into the vertices array, one for each edge.
 - snub_dodecahedron_adjacent_vertices - an array of arrays, each containing indexes into the vertex array. For examlple, snub_dodecahedron_adjacent_vertices[3] is an array containing the indexes of vertices that are connected to snub_dodecahedron_vertices[3] by an edge.
-snub_dodecahedron_triangle_faces and snub_dodecahedron_pentagon_faces contain arrays with indices in the vertex array for each triangular and pentagonal face respectively.
+- snub_dodecahedron_triangle_faces and snub_dodecahedron_pentagon_faces contain arrays with indices in the vertex array for each triangular and pentagonal face, respectively.
 - snub_dodecahedron_adjacent_faces contains all faces.
 
 Usage:
