@@ -1,7 +1,99 @@
+/*
+To the extent possible under law, Benjamin E Morgan has waived all copyright and related or neighboring rights to openscad-polyhedra. This work is published in the public domain.
+
+Original Source: https://github.com/benjamin-edward-morgan/openscad-polyhedra
+
+The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedian Solids. 
+
+Included polyhedra:
+- tetrahedron
+- octahedron
+- hexahedron
+- icosahedron
+- dodecahedron
+- cubeoctahedron
+- truncated_tetrahedron
+- snub_cube
+- rhombicuboctahedron
+- truncated_hexahedron
+- truncated_octahedron
+- icosidodecahedron
+- snub_dodecahedron
+- rhombicosidodecahedron
+- truncated_cuboctahedron
+- truncated_icosahedron
+- truncated_dodecahedron
+- truncated_icosidodecahedron
+
+Each shape includes an array of vertices, edges, adjacent_vertices, and faces.
+Archimedian solids also include separte arrays of faces that are of the same polygon shape.
+Example:
+snub_dodecahedron_vertices - an array of 3-vectors 
+snub_dodecahedron_edges - an array of 2-tuples containing indexes into the vertices array, one for each edge.
+snub_dodecahedron_adjacent_vertices - an array of arrays, each containing indexes into the vertex array. For examlple, snub_dodecahedron_adjacent_vertices[3] is an array containing the indexes of vertices that are connected to snub_dodecahedron_vertices[3] by an edge.
+snub_dodecahedron_triangle_faces and snub_dodecahedron_pentagon_faces contain arrays with indices in the vertex array for each triangular and pentagonal face respectively.
+snub_dodecahedron_adjacent_faces contains all faces.
+
+Usage:
+
+//to arrange modules at vertices
+for(i=[0:len(snub_dodecahedron_vertices)-1])
+    orient_vertex(
+        snub_dodecahedron_vertices[i], 
+        snub_dodecahedron_vertices[snub_dodecahedron_adjacent_vertices[i][0]]
+    )
+    //your vertical module centered at the origin here. For example:
+    sphere(r=0.2,$fn=64);
+
+
+//to arrange modules along the edges
+for(i=[0:len(snub_dodecahedron_edges)-1])
+    orient_edge(
+        snub_dodecahedron_vertices[snub_dodecahedron_edges[i][0]],
+        snub_dodecahedron_vertices[snub_dodecahedron_edges[i][1]]
+    )
+    //your vertical module centered at the origin here. For example:
+    cylinder(height=1,r=0.1,center=true,$fn=32);
+
+
+//to arrange modules on the faces
+for(i=[0:len(snub_dodecahedron_faces)-1])
+    orient_face(
+        map_verts(snub_dodecahedron_vertices, snub_dodecahedron_faces[i])
+    )
+    //your module centered at the origin on the x-y plane here. For example:
+    rotate(180/len(snub_dodecahedron_faces[i])-90) 
+    cylinder(r=0.3,h=0.02,$fn=len(snub_dodecahedron_faces[i]));
+
+
+//to construct a solid
+polyhedron(
+    points = snub_dodecahedron_vertices,
+    faces = snub_dodecahedron_faces
+);
+
+*/
+
+
 
 /**********************/
 /**Geodesic functions**/
 /**********************/
+
+/* verts is an array of 3-vectors, face is an aray of indices into verts 
+returns an array of the 3-vectors indexed by the face array */
+function map_verts(verts, face) = 
+[ for(i=[0:len(face)-1]) verts[face[i]] ];
+    
+/* verts is an array of 3-vectors. i and sum should use their default values 
+returns the sum of all verts as a 3-vector*/
+function sum_verts(verts, i=0, sum=[0,0,0]) = 
+i<len(verts) ? sum_verts(verts, i+1, verts[i] + sum) : sum ;
+
+/* arrays is an array of arrays. 
+returns an array that is the concatenation of all child*/
+function concat_all(arrays, i=0, final_array=[]) = 
+len(arrays) <= i ? final_array : concat_all(arrays, i+1, concat(arrays[i], final_array));
 
 /*
 - a and b are 3-vectors
@@ -42,15 +134,17 @@ module orient_vertex(a,b) {
     children();  
 }
 
-module orient_face(verts, face) {
-    u = verts[face[0]] - verts[face[1]] ;
+/* verts is an array of the vertices that make up a single face. 
+Trasforms an object centered at the origin to lie at the center of the face with the z+ axis perpendicular to the face and with the x-axis of the original coordinate system parallel with the first edge in the face. */
+module orient_face(verts) {
+    u = verts[0] - verts[1] ;
     uhat = u/norm(u);
-    q = verts[face[1]] - verts[face[2]] ;
+    q = verts[1] - verts[2] ;
     w = cross(q,u);
     what = w/norm(w);
     vhat = cross(what,uhat);
     
-    center = sum_verts(map_verts(verts,face))/len(face) ;
+    center = sum_verts(verts)/len(verts) ;
 
     mat = 
       [[uhat[0],vhat[0],what[0],center[0]],

@@ -32,23 +32,6 @@ polyhedraDisplayShape = "layout";
 //polyhedraDisplayShape = "truncated_dodecahedron";
 //polyhedraDisplayShape = "truncated_icosidodecahedron";
 
-/*
-cubeoctahedron
-truncated_tetrahedron
-snub_cube
-rhombicuboctahedron
-truncated_hexahedron
-truncated_octahedron
-icosidodecahedron
-snub_dodecahedron
-rhombicosidodecahedron
-truncated_cuboctahedron
-truncated_icosahedron
-truncated_dodecahedron
-truncated_icosidodecahedron
-*/
-//polyhedraDisplayShape = "truncated_icosidodecahedron";
-
 echo(polyhedraDisplayShape=polyhedraDisplayShape);
 
 
@@ -166,20 +149,11 @@ module show_edges(verts, edges,$fn=16) {
     }
 }
 
-function map_verts(verts, face) = 
-[ for(i=[0:len(face)-1]) verts[face[i]] ];
-    
-function sum_verts(verts, i=0, sum=[0,0,0]) = 
-i<len(verts) ? sum_verts(verts, i+1, verts[i] + sum) : sum ;
-
-function concat_all(arrays, i=0, final_array=[]) = 
-len(arrays) <= i ? final_array : concat_all(arrays, i+1, concat(arrays[i], final_array));
-
 module show_faces(verts, faces) {
     for(i=[0:len(faces)-1]) {
         center = sum_verts(map_verts(verts,faces[i]))/len(faces[i]) ;
         r = norm(verts[faces[i][0]] - center) * 0.8;
-        orient_face(verts, faces[i])
+        orient_face(map_verts(verts, faces[i]))
         sample_face(i=i, n=len(faces[i]), r=r); 
     }
 }
