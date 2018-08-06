@@ -35,11 +35,11 @@ function render_gif() {
   for i in `seq 0 5 359`
   do
     PADDED=$(printf "%03d" $i)
-    FILENAME="img/tmp/polyhedra_${SHAPE}_${MODE}_${PADDED}.png"
+    FILENAME="img/tmp/${SHAPE}_${MODE}_${PADDED}.png"
     echo -e "rendering ${FILENAME}"
     openscad \
       --camera=-0,0,0,55,0,$i,140 \
-      --imgsize=512,384 \
+      --imgsize=256,192 \
       --projection=p \
       -D 'polyhedraDisplayShape="'${SHAPE}'"' \
       -D 'polyhedraDisplayMode="'${MODE}'"' \
@@ -48,7 +48,7 @@ function render_gif() {
       polyhedra-tests.scad
   done
 
-  magick img/tmp/*.png img/polyhedra_${SHAPE}_${MODE}.gif
+  magick img/tmp/*.png img/${SHAPE}_${MODE}.gif
 
   rm -f img/tmp/*
 }
@@ -79,11 +79,11 @@ ALLSHAPES=("tetrahedron" "octahedron" "hexahedron" "icosahedron" "dodecahedron" 
 #    render_stl $SHAPE "solid"
 # done
 
-# for SHAPE in ${ALLSHAPES[@]}
-# do
-#    echo $SHAPE
-#    render_gif $SHAPE "wireframe"
-# done
+for SHAPE in ${ALLSHAPES[@]}
+do
+   echo $SHAPE
+   render_gif $SHAPE "wireframe"
+done
 
 for SHAPE in "layout"; do
  render_png $SHAPE "enumerated"
