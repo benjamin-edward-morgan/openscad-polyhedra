@@ -1,6 +1,6 @@
 # openscad-polyhedra
 
-The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedian Solids.
+The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedean Solids.
 
 Included polyhedra:
 - tetrahedron
@@ -23,7 +23,7 @@ Included polyhedra:
 - truncated_icosidodecahedron
 
 Each shape includes an array of vertices, edges, adjacent_vertices, and faces.
-Archimedian solids also include separte arrays of faces that are of the same polygon shape.
+Archimedean solids also include separte arrays of faces that are of the same polygon shape.
 Example:
 - snub_dodecahedron_vertices - an array of 3-vectors
 - snub_dodecahedron_edges - an array of 2-tuples containing indexes into the vertices array, one for each edge.
