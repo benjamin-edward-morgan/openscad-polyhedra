@@ -32,47 +32,45 @@ polyhedraDisplayShape = "layout";
 //polyhedraDisplayShape = "truncated_dodecahedron";
 //polyhedraDisplayShape = "truncated_icosidodecahedron";
 
-echo(polyhedraDisplayShape=polyhedraDisplayShape);
-
 
 if(polyhedraDisplayShape=="layout")
-    scale(3) polyhedra_layout();
+    conditional_scale(3) polyhedra_layout();
 else if(polyhedraDisplayShape=="tetrahedron")
-    scale(30) tetrahedron();
+    conditional_scale(30) tetrahedron();
 else if(polyhedraDisplayShape=="octahedron")
-    scale(30) octahedron();
+    conditional_scale(30) octahedron();
 else if(polyhedraDisplayShape=="hexahedron")
-    scale(25) hexahedron();
+    conditional_scale(25) hexahedron();
 else if(polyhedraDisplayShape=="icosahedron")
-    scale(20) icosahedron();
+    conditional_scale(20) icosahedron();
 else if(polyhedraDisplayShape=="dodecahedron")
-    scale(15) dodecahedron();
+    conditional_scale(15) dodecahedron();
 else if(polyhedraDisplayShape=="cubeoctahedron")
-    scale(20) cubeoctahedron();
+    conditional_scale(20) cubeoctahedron();
 else if(polyhedraDisplayShape=="truncated_tetrahedron")
-    scale(17) truncated_tetrahedron();
+    conditional_scale(17) truncated_tetrahedron();
 else if(polyhedraDisplayShape=="snub_cube")
-    scale(14) snub_cube();
+    conditional_scale(14) snub_cube();
 else if(polyhedraDisplayShape=="rhombicuboctahedron")
-    scale(13) rhombicuboctahedron();
+    conditional_scale(13) rhombicuboctahedron();
 else if(polyhedraDisplayShape=="truncated_hexahedron")
-    scale(12) truncated_hexahedron();
+    conditional_scale(12) truncated_hexahedron();
 else if(polyhedraDisplayShape=="truncated_octahedron")
-    scale(12) truncated_octahedron();
+    conditional_scale(12) truncated_octahedron();
 else if(polyhedraDisplayShape=="icosidodecahedron")
-    scale(11) icosidodecahedron();
+    conditional_scale(11) icosidodecahedron();
 else if(polyhedraDisplayShape=="snub_dodecahedron")
-    scale(9) snub_dodecahedron();
+    conditional_scale(9) snub_dodecahedron();
 else if(polyhedraDisplayShape=="rhombicosidodecahedron")
-    scale(9) rhombicosidodecahedron();
+    conditional_scale(9) rhombicosidodecahedron();
 else if(polyhedraDisplayShape=="truncated_cuboctahedron")
-    scale(8) truncated_cuboctahedron();
+    conditional_scale(8) truncated_cuboctahedron();
 else if(polyhedraDisplayShape=="truncated_icosahedron")
-    scale(8) truncated_icosahedron();
+    conditional_scale(8) truncated_icosahedron();
 else if(polyhedraDisplayShape=="truncated_dodecahedron")
-    scale(7) truncated_dodecahedron();
+    conditional_scale(7) truncated_dodecahedron();
 else if(polyhedraDisplayShape=="truncated_icosidodecahedron")
-    scale(6) truncated_icosidodecahedron();
+    conditional_scale(6) truncated_icosidodecahedron();
 else echo(concat("unknown polyhedraDisplayShape: ", polyhedraDisplayName));
 
 /***************************/
@@ -80,13 +78,12 @@ else echo(concat("unknown polyhedraDisplayShape: ", polyhedraDisplayName));
 /***************************/
 
 module underlined_text(text="abc", text_size=0.2) {
-        text(text,font=polyhedraEnumeratedFont,size=text_size,valign="center",halign="center");
-        translate([0,-text_size*0.6*len(text)])
-        square(size=[text_size*0.8,text_size/7],center=true);
+  text(text,font=polyhedraEnumeratedFont,size=text_size,valign="center",halign="center");
+  translate([0,-text_size*0.6*len(text)])
+    square(size=[text_size*0.8,text_size/7],center=true);
 }
 
 module sample_vertex(i) {
-    
     if(polyhedraDisplayMode=="enumerated")
         rotate(-90)
         linear_extrude(0.1) 
@@ -95,9 +92,7 @@ module sample_vertex(i) {
         sphere(r=0.1,$fn=32);
 }
 
-//sample_edge(h=1);
 module sample_edge(i,h=2,r=0.05,$fn=16) {
-    
     if(polyhedraDisplayMode=="enumerated")
         linear_extrude(height=h*0.7,center=true)
             translate([0.1,0,0])
@@ -108,10 +103,7 @@ module sample_edge(i,h=2,r=0.05,$fn=16) {
            circle(r=r);
 } 
 
-
-//sample_face(i=140,n=3);
 module sample_face(i,n,r=3,h=0.1,t=0.1) {
-    
     if(polyhedraDisplayMode=="enumerated")
         linear_extrude(height=h) {
             scale(r/20)
@@ -131,6 +123,13 @@ module sample_face(i,n,r=3,h=0.1,t=0.1) {
 /***************************************/
 /** Polyhedra demonstration functions **/
 /***************************************/
+
+module conditional_scale(x) {
+    if(polyhedraDisplayMode=="wireframe")
+        children();
+    else
+        scale(x) children();
+}
 
 module show_vertices(verts,adjacents) {
     for(i=[0:len(verts)-1])
@@ -158,12 +157,11 @@ module show_faces(verts, faces) {
     }
 }
 
-module show_polyhedron(vertices, edges, adjacentVertices, facesArray, allFaces) {
+module show_polyhedron(vertices, edges, adjacentVertices, facesArray) {
    
   echo(vertices=len(vertices));
   echo(edges=len(edges));
-  echo(faces=len(facesArray));
-  echo(radius=norm(vertices[0]));
+  echo(faces=len(concat_all(facesArray)));
     
   faceColorArray = [polyhedraFaceColor1, polyhedraFaceColor2, polyhedraFaceColor3];
     
@@ -237,7 +235,6 @@ module polyhedra_layout() {
      }
 }
 
-//tetrahedron();
 module tetrahedron() {
     echo("tetrahedron");
     show_polyhedron(
@@ -248,7 +245,6 @@ module tetrahedron() {
     );
 }
 
-//hexahedron();
 module hexahedron() {
     echo("hexahedron");
     show_polyhedron(
@@ -259,7 +255,6 @@ module hexahedron() {
     );
 }
 
-//octahedron();
 module octahedron() {
     echo("octahedron");
     show_polyhedron(
@@ -270,7 +265,6 @@ module octahedron() {
     );
 }
 
-//dodecahedron();
 module dodecahedron() {
     echo("dodecahedron");
     show_polyhedron(
@@ -281,7 +275,6 @@ module dodecahedron() {
     );
 }
 
-//icosahedron();
 module icosahedron() {
     echo("icosahedron");
     show_polyhedron(
@@ -292,7 +285,6 @@ module icosahedron() {
     );
 }
 
-//cubeoctahedron();
 module cubeoctahedron() {
     echo("cubeoctahedron");
     show_polyhedron(
@@ -304,7 +296,6 @@ module cubeoctahedron() {
     ); 
 }
 
-//icosidodecahedron();
 module icosidodecahedron() {
     echo("icosidodecahedron");
     show_polyhedron(
@@ -316,7 +307,6 @@ module icosidodecahedron() {
     );
 }
 
-//truncated_tetrahedron();
 module truncated_tetrahedron() {
     echo("truncated_tetrahedron");
     show_polyhedron(
@@ -328,7 +318,6 @@ module truncated_tetrahedron() {
     );
 }
 
-//truncated_hexahedron();
 module truncated_hexahedron() {
     echo("truncated_hexahedron");
     show_polyhedron(
@@ -340,7 +329,6 @@ module truncated_hexahedron() {
     );
 }
 
-//truncated_octahedron();
 module truncated_octahedron() {
     echo("truncated_octahedron");
     show_polyhedron(
@@ -352,8 +340,6 @@ module truncated_octahedron() {
     );
 }
 
-
-//rhombicuboctahedron();
 module rhombicuboctahedron() {
     echo("rhombicuboctahedron");
     show_polyhedron(
@@ -365,7 +351,6 @@ module rhombicuboctahedron() {
     );
 }
 
-//truncated_cuboctahedron();
 module truncated_cuboctahedron() {
     echo("truncated_cuboctahedron");
     show_polyhedron(
@@ -378,7 +363,6 @@ module truncated_cuboctahedron() {
     );
 }
 
-//snub_cube();
 module snub_cube() {
     echo("snub_cube");
     show_polyhedron(
@@ -390,8 +374,6 @@ module snub_cube() {
     );
 }
 
-
-//truncated_dodecahedron();
 module truncated_dodecahedron() {
     echo("truncated_dodecahedron");
     show_polyhedron(
@@ -403,8 +385,6 @@ module truncated_dodecahedron() {
     );
 }
 
-
-//truncated_icosahedron();
 module truncated_icosahedron() {
     echo("truncated_icosahedron");
     show_polyhedron(
@@ -416,7 +396,6 @@ module truncated_icosahedron() {
     );
 }
 
-//rhombicosidodecahedron();
 module rhombicosidodecahedron() {
     echo("rhombicosidodecahedron");
     show_polyhedron(
@@ -429,7 +408,6 @@ module rhombicosidodecahedron() {
     ); 
 }
 
-//snub_dodecahedron();
 module snub_dodecahedron() {
     echo("snub_dodecahedron");
     show_polyhedron(
@@ -441,7 +419,6 @@ module snub_dodecahedron() {
     );
 }
 
-//truncated_icosidodecahedron();
 module truncated_icosidodecahedron() {
     echo("truncated_icosidodecahedron");
     show_polyhedron(
