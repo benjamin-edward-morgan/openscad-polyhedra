@@ -72,22 +72,22 @@ mkdir -p stl
 
 ALLSHAPES=("tetrahedron" "octahedron" "hexahedron" "icosahedron" "dodecahedron" "truncated_icosidodecahedron" "cubeoctahedron" "truncated_tetrahedron" "snub_cube" "rhombicuboctahedron" "truncated_hexahedron" "truncated_octahedron" "icosidodecahedron" "snub_dodecahedron" "rhombicosidodecahedron" "truncated_cuboctahedron" "truncated_icosahedron" "truncated_dodecahedron" "truncated_icosidodecahedron")
 
-# for SHAPE in ${ALLSHAPES[@]}
-# do
-#    echo $SHAPE
-#    render_stl $SHAPE "wireframe"
-#    render_stl $SHAPE "solid"
-# done
-
 for SHAPE in ${ALLSHAPES[@]}
 do
-   echo $SHAPE
-   render_gif $SHAPE "wireframe"
+  echo $SHAPE
+  render_stl $SHAPE "wireframe"
+  render_stl $SHAPE "solid"
 done
 
-for SHAPE in "layout"; do
- render_png $SHAPE "enumerated"
-done
+#for SHAPE in ${ALLSHAPES[@]}
+#do
+#   echo $SHAPE
+#   render_gif $SHAPE "wireframe"
+#done
+
+#for SHAPE in "layout"; do
+# render_png $SHAPE "enumerated"
+#done
 
 
 ##for SHAPE in "all"; do

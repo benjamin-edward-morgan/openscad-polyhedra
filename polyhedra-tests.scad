@@ -125,7 +125,7 @@ module sample_face(i,n,r=3,h=0.1,t=0.1) {
 /***************************************/
 
 module conditional_scale(x) {
-    if(polyhedraDisplayMode=="wireframe")
+    if(polyhedraDisplayMode=="wireframe" || polyhedraDisplayMode=="solid")
         children();
     else
         scale(x) children();
