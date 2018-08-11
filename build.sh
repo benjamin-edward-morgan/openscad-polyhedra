@@ -2,14 +2,14 @@
 
 function check_openscad() {
   openscad -v >/dev/null 2>&1 || {
-    printf "Please set up OpenSCAD so that it can be used in this script.\nSee https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_OpenSCAD_in_a_command_line_environment\n"
+    echo "Please set up OpenSCAD so that it can be used in this script.\nSee https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_OpenSCAD_in_a_command_line_environment\n"
     exit 1
   }
 }
 
 function check_magick() {
   magick -version >/dev/null 2>&1 || {
-    printf "Please set up ImageMagick. You should be able to do this from your favorite package manager like Homebrew or apt-get."
+    echo "Please set up ImageMagick. You should be able to do this from your favorite package manager like Homebrew or apt-get."
     exit 1
   }
 }
@@ -43,8 +43,6 @@ function render_png() {
     polyhedra-tests.scad
   magick ${FILENAMEX4} -resize 2048x1536 ${FILENAME}
   rm ${FILENAMEX4}
-
-
 }
 
 function render_gif() {
@@ -74,9 +72,7 @@ function render_gif() {
     magick ${FILENAMEX4} -resize 256x192 ${FILENAME}
     rm ${FILENAMEX4}
   done
-
   magick img/tmp/*.png img/${SHAPE}_${MODE}.gif
-
   rm -fr img/tmp
 }
 
@@ -90,7 +86,7 @@ function render_stl() {
   openscad \
     -D 'polyhedraDisplayShape="'${SHAPE}'"' \
     -D 'polyhedraDisplayMode="'${MODE}'"' \
-    -D "polyhedraNoScale=false" \
+    -D "polyhedraNoScale=true" \
     -o $FILENAME \
     polyhedra-tests.scad
 }
@@ -131,5 +127,4 @@ else
   else
     build_type $SHAPE $MODE $TYPE
   fi
-
 fi

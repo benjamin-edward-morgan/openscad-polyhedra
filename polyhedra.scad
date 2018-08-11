@@ -1,10 +1,9 @@
 /*
 
 To the extent possible under law, Benjamin E Morgan has waived all copyright and related or neighboring rights to openscad-polyhedra. This work is published in the public domain.
-
 Original Source: https://github.com/benjamin-edward-morgan/openscad-polyhedra
 
-The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedean Solids.
+The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedean solids.
 
 All polyhedra are centered at the origin and have an edge length of 1.
 
@@ -40,7 +39,6 @@ Example:
 - snub_dodecahedron_adjacent_faces contains all faces
 
 Usage:
-
 // add polyhedra.scad to your project and include it
 include<polyhedra.scad>;
 
@@ -53,7 +51,6 @@ for(i=[0:len(snub_dodecahedron_vertices)-1])
     //your vertical module centered at the origin here. For example:
     sphere(r=0.2,$fn=64);
 
-
 // to arrange modules along the edges
 for(i=[0:len(snub_dodecahedron_edges)-1])
     orient_edge(
@@ -62,7 +59,6 @@ for(i=[0:len(snub_dodecahedron_edges)-1])
     )
     //your vertical module centered at the origin here. For example:
     cylinder(height=1,r=0.1,center=true,$fn=32);
-
 
 // to arrange modules on the faces
 for(i=[0:len(snub_dodecahedron_faces)-1])
@@ -73,11 +69,10 @@ for(i=[0:len(snub_dodecahedron_faces)-1])
     rotate(180/len(snub_dodecahedron_faces[i])-90)
     cylinder(r=0.3,h=0.02,$fn=len(snub_dodecahedron_faces[i]));
 
-
 // to construct a solid
 polyhedron(
-    points = snub_dodecahedron_vertices,
-    faces = snub_dodecahedron_faces
+   points = snub_dodecahedron_vertices,
+   faces = snub_dodecahedron_faces
 );
 
 */
@@ -251,7 +246,7 @@ truncated_cuboctahedron_hexagon_faces=[[38,14,30,6,46,22],[42,2,26,10,34,18],[32
 truncated_cuboctahedron_octagon_faces=[[4,0,24,26,2,6,30,28],[37,36,12,14,38,39,15,13],[42,18,19,43,47,23,22,46],[11,35,34,10,8,32,33,9],[21,45,41,17,16,40,44,20],[29,31,7,3,27,25,1,5]];
 truncated_cuboctahedron_faces=concat(truncated_cuboctahedron_square_faces,truncated_cuboctahedron_hexagon_faces,truncated_cuboctahedron_octagon_faces);
 snub_cube_vertices=[[1,1/polyhedraTribConst,polyhedraTribConst],[1,-1/polyhedraTribConst,-polyhedraTribConst],[-1,1/polyhedraTribConst,-polyhedraTribConst],[-1,-1/polyhedraTribConst,polyhedraTribConst],[polyhedraTribConst,1,1/polyhedraTribConst],[polyhedraTribConst,-1,-1/polyhedraTribConst],[-polyhedraTribConst,1,-1/polyhedraTribConst],[-polyhedraTribConst,-1,1/polyhedraTribConst],[1/polyhedraTribConst,polyhedraTribConst,1],[1/polyhedraTribConst,-polyhedraTribConst,-1],[-1/polyhedraTribConst,polyhedraTribConst,-1],[-1/polyhedraTribConst,-polyhedraTribConst,1],[1/polyhedraTribConst,1,-polyhedraTribConst],[-1/polyhedraTribConst,1,polyhedraTribConst],[1/polyhedraTribConst,-1,polyhedraTribConst],[-1/polyhedraTribConst,-1,-polyhedraTribConst],[1,polyhedraTribConst,-1/polyhedraTribConst],[-1,polyhedraTribConst,1/polyhedraTribConst],[1,-polyhedraTribConst,1/polyhedraTribConst],[-1,-polyhedraTribConst,-1/polyhedraTribConst],[polyhedraTribConst,1/polyhedraTribConst,-1],[-polyhedraTribConst,1/polyhedraTribConst,1],[polyhedraTribConst,-1/polyhedraTribConst,1],[-polyhedraTribConst,-1/polyhedraTribConst,-1]]/polyhedraSnubCubeAlpha;
-snub_cube_edges=[[13,0],[0,14],[14,3],[3,13],[4,20],[20,5],[5,22],[22,4],[8,16],[16,10],[10,17],[17,8],[7,23],[23,6],[6,21],[21,7],[9,18],[18,11],[11,19],[19,9],[1,12],[12,2],[2,15],[15,1],[14,22],[22,0],[0,4],[4,8],[8,0],[8,13],[13,17],[17,21],[21,13],[21,3],[3,7],[7,11],[11,3],[11,14],[14,18],[18,22],[1,9],[9,15],[15,19],[19,23],[23,15],[23,2],[2,6],[6,10],[10,2],[10,12],[12,16],[16,20],[20,12],[20,1],[1,5],[1,9],[9,5],[5,18],[16,4],[6,17],[19,7]];
+snub_cube_edges=[[13,0],[0,14],[14,3],[3,13],[4,20],[20,5],[5,22],[22,4],[8,16],[16,10],[10,17],[17,8],[7,23],[23,6],[6,21],[21,7],[9,18],[18,11],[11,19],[19,9],[1,12],[12,2],[2,15],[15,1],[14,22],[22,0],[0,4],[4,8],[8,0],[8,13],[13,17],[17,21],[21,13],[21,3],[3,7],[7,11],[11,3],[11,14],[14,18],[18,22],[1,9],[9,15],[15,19],[19,23],[23,15],[23,2],[2,6],[6,10],[10,2],[10,12],[12,16],[16,20],[20,12],[20,1],[1,5],[9,5],[5,18],[16,4],[6,17],[19,7]];
 snub_cube_adjacent_vertices=[[14,13,22,8,4],[5,20,9,12,15],[10,6,12,23,15],[14,21,13,7,11],[0,20,22,16,8],[20,1,9,22,18],[10,21,2,17,23],[21,3,11,23,19],[0,13,17,16,4],[5,1,18,19,15],[6,2,17,12,16],[14,7,3,18,19],[10,20,1,2,16],[0,21,17,3,8],[0,22,3,18,11],[1,9,2,23,19],[10,20,12,8,4],[10,6,21,13,8],[5,14,9,22,11],[9,7,11,23,15],[5,1,12,16,4],[6,13,17,7,3],[0,5,14,18,4],[6,2,7,19,15]];
 snub_cube_triangle_faces=[[22,14,0],[22,0,4],[4,0,8],[8,0,13],[17,8,13],[17,13,21],[21,13,3],[7,21,3],[7,3,11],[11,3,14],[18,11,14],[18,14,22],[5,18,22],[20,4,16],[16,4,8],[10,17,6],[6,17,21],[23,7,19],[19,7,11],[9,18,5],[20,16,12],[12,16,10],[2,10,6],[2,6,23],[12,10,2],[2,23,15],[15,23,19],[15,19,9],[15,9,1],[1,9,5],[1,5,20],[1,20,12]];
 snub_cube_square_faces=[[0,14,3,13],[16,8,17,10],[6,21,7,23],[19,11,18,9],[5,22,4,20],[1,12,2,15]];

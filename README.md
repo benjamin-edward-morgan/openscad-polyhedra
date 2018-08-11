@@ -2,13 +2,9 @@
 
 ![Polyhedra](img/layout_enumerated.png)
 
-Rotating gifs of each polyhedron: [Index](Index.md)
+[Rotating gifs of each polyhedron](Index.md)
 
-To the extent possible under law, Benjamin E Morgan has waived all copyright and related or neighboring rights to openscad-polyhedra. This work is published in the public domain.
-
-Original Source: https://github.com/benjamin-edward-morgan/openscad-polyhedra
-
-The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedean Solids.
+The arrays and utility functions included here can be used to place modules coincident with the vertices, edges and faces of the Platonic and Archimedean solids.
 
 All polyhedra are centered at the origin and have an edge length of 1.
 
