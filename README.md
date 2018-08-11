@@ -50,7 +50,7 @@ for(i=[0:len(snub_dodecahedron_vertices)-1])
         snub_dodecahedron_vertices[i],
         snub_dodecahedron_vertices[snub_dodecahedron_adjacent_vertices[i][0]]
     )
-    //your vertical module centered at the origin here. For example:
+    // your vertical module centered at the origin here. For example:
     sphere(r=0.2,$fn=64);
 
 
@@ -60,7 +60,7 @@ for(i=[0:len(snub_dodecahedron_edges)-1])
         snub_dodecahedron_vertices[snub_dodecahedron_edges[i][0]],
         snub_dodecahedron_vertices[snub_dodecahedron_edges[i][1]]
     )
-    //your vertical module centered at the origin here. For example:
+    // your vertical module centered at the origin here. For example:
     cylinder(height=1,r=0.1,center=true,$fn=32);
 
 
@@ -69,7 +69,7 @@ for(i=[0:len(snub_dodecahedron_faces)-1])
     orient_face(
         map_verts(snub_dodecahedron_vertices, snub_dodecahedron_faces[i])
     )
-    //your module on the x-y plane here, centered at the origin. For example:
+    // your module on the x-y plane here, centered at the origin. For example:
     rotate(180/len(snub_dodecahedron_faces[i])-90)
     cylinder(r=0.3,h=0.02,$fn=len(snub_dodecahedron_faces[i]));
 
