@@ -58,18 +58,21 @@ function render_gif() {
   for i in `seq 0 5 359`
   do
     PADDED=$(printf "%03d" $i)
+    FILENAMEX4="img/tmp/${SHAPE}_${MODE}_${PADDED}_x4.png"
     FILENAME="img/tmp/${SHAPE}_${MODE}_${PADDED}.png"
     echo -e "rendering ${FILENAME}"
     openscad \
       --camera=-0,0,0,55,0,$i,140 \
-      --imgsize=256,192 \
+      --imgsize=1024,768 \
       --projection=p \
       --colorscheme="Tomorrow Night" \
       -D 'polyhedraDisplayShape="'${SHAPE}'"' \
       -D 'polyhedraDisplayMode="'${MODE}'"' \
       -D "polyhedraNoScale=false" \
-      -o $FILENAME \
+      -o ${FILENAMEX4} \
       polyhedra-tests.scad
+    magick ${FILENAMEX4} -resize 256x192 ${FILENAME}
+    rm ${FILENAMEX4}
   done
 
   magick img/tmp/*.png img/${SHAPE}_${MODE}.gif

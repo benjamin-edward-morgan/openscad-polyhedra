@@ -27,10 +27,10 @@ polyhedraDisplayMode = "enumerated";
 //polyhedraDisplayMode = "solid";
 
 //Uncomment a display shape. The is one for each polyhedron included in polyhedra.scad. The layout arrangement shows all polyhedra.
-polyhedraDisplayShape = "layout";
+//polyhedraDisplayShape = "layout";
 //polyhedraDisplayShape = "tetrahedron";
 //polyhedraDisplayShape = "octahedron";
-//polyhedraDisplayShape = "hexahedron";
+polyhedraDisplayShape = "hexahedron";
 //polyhedraDisplayShape = "icosahedron";
 //polyhedraDisplayShape = "dodecahedron";
 //polyhedraDisplayShape = "cubeoctahedron";
