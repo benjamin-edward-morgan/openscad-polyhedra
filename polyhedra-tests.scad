@@ -1,17 +1,32 @@
+/*
+
+To the extent possible under law, Benjamin E Morgan has waived all copyright and related or neighboring rights to openscad-polyhedra. This work is published in the public domain.
+
+Original Source: https://github.com/benjamin-edward-morgan/openscad-polyhedra
+
+The modules included here utilize pollyhedra.scad to demonstrate the arrangement of faces, edges and vertices and the construction of solid polyhedra for all shapes included in polyhedra.scad 
+
+*/
+
 include<polyhedra.scad>;
 
+//RGB colors for examples
 polyhedraEdgeColor = [227,26,28]/255;
 polyhedraVertexColor = [31,120,180]/255;
 polyhedraFaceColor1 = [178,223,138]/255;
 polyhedraFaceColor2 = [251,154,153]/255;
 polyhedraFaceColor3 = [166,206,227]/255;
 polyhedraSolidColor = [253,191,111]/255;
+
+//This font is used in the enumerated examples for edges, vertices and faces. If you don't have this font installed, choose a font from the Font List in the OpenSCAD Help menu.
 polyhedraEnumeratedFont = "Consolas";
 
+//Uncomment a display mode to change how the shapes are rendered
 polyhedraDisplayMode = "enumerated";
 //polyhedraDisplayMode = "wireframe";
 //polyhedraDisplayMode = "solid";
 
+//Uncomment a display shape. The is one for each polyhedron included in polyhedra.scad. The layout arrangement shows all polyhedra.
 polyhedraDisplayShape = "layout";
 //polyhedraDisplayShape = "tetrahedron";
 //polyhedraDisplayShape = "octahedron";
@@ -77,12 +92,21 @@ else echo(concat("unknown polyhedraDisplayShape: ", polyhedraDisplayName));
 /** Test component shapes **/
 /***************************/
 
+/*
+2d text with a line under it, so 6 and 9 can be more easily differentiated. 
+*/
 module underlined_text(text="abc", text_size=0.2) {
-  text(text,font=polyhedraEnumeratedFont,size=text_size,valign="center",halign="center");
-  translate([0,-text_size*0.6*len(text)])
-    square(size=[text_size*0.8,text_size/7],center=true);
+  scale(text_size)  
+    text(text,font=polyhedraEnumeratedFont,size=1,valign="center",halign="center");
+  translate([0,-text_size*0.6])
+    square(size=[text_size*0.6*len(text),text_size/7],center=true);
 }
 
+/*
+this module is used for the example vertices
+i is the number displayed in "enumerated" mode
+in "wireframe" mode a sphere is created instead
+*/
 module sample_vertex(i) {
     if(polyhedraDisplayMode=="enumerated")
         rotate(-90)
@@ -92,6 +116,11 @@ module sample_vertex(i) {
         sphere(r=0.1,$fn=32);
 }
 
+/*
+this module is used for example edges
+i is the number displayed in "enumerated" mode
+in "wireframe" mode a cylinder is created instead
+*/
 module sample_edge(i,h=2,r=0.05,$fn=16) {
     if(polyhedraDisplayMode=="enumerated")
         linear_extrude(height=h*0.7,center=true)
@@ -103,15 +132,15 @@ module sample_edge(i,h=2,r=0.05,$fn=16) {
            circle(r=r);
 } 
 
+/*
+this module is used to create an example face in "enumerated" mode
+i is the number displayed on the face
+n is the number of sides the face has
+*/
 module sample_face(i,n,r=3,h=0.1,t=0.1) {
     if(polyhedraDisplayMode=="enumerated")
         linear_extrude(height=h) {
-            scale(r/20)
-            text(str(i),font="Consolas",size=10,valign="center",halign="center");
-                if(i==6 || i==9)
-           translate([0,-0.4])
-           square(size=[0.6,0.1],center=true);
-            
+            underlined_text(str(i),text_size=r/2) ;
             rotate(180/n-90)
             difference() {
               circle($fn=n,r=r);
@@ -124,19 +153,29 @@ module sample_face(i,n,r=3,h=0.1,t=0.1) {
 /** Polyhedra demonstration functions **/
 /***************************************/
 
+/*
+applies a scale transformation to children only in "enumerated" mode
+*/
 module conditional_scale(x) {
-    if(polyhedraDisplayMode=="wireframe" || polyhedraDisplayMode=="solid")
-        children();
-    else
+    if(polyhedraDisplayMode=="enumerated")
         scale(x) children();
+    else
+        children();
 }
 
+/*
+creates a sample_vertex for each vertex in verts
+the adjacents array is used to orient the vertices correctly 
+*/
 module show_vertices(verts,adjacents) {
     for(i=[0:len(verts)-1])
     orient_vertex(verts[i], verts[adjacents[i][0]]) 
     sample_vertex(i);
 }
 
+/*
+creates a sample_edge for edge in edges and orients it
+*/
 module show_edges(verts, edges,$fn=16) {
     for(i=[0:len(edges)-1]) {
         a = verts[edges[i][0]];
@@ -148,15 +187,25 @@ module show_edges(verts, edges,$fn=16) {
     }
 }
 
+/*
+creates a sample_face for each face in faces and orients it 
+*/
 module show_faces(verts, faces) {
     for(i=[0:len(faces)-1]) {
         center = sum_verts(map_verts(verts,faces[i]))/len(faces[i]) ;
-        r = norm(verts[faces[i][0]] - center) * 0.8;
+        r = norm(verts[faces[i][0]] - center) - 0.1;
         orient_face(map_verts(verts, faces[i]))
         sample_face(i=i, n=len(faces[i]), r=r); 
     }
 }
 
+/*
+uses show_vertices, show_edges and show_faces to display all components of the polyhedra. Also renders a solid polyhedraon.
+vertices is a vertices array 
+edges is an edges array 
+adjacent vertices is an adjacent_vertices array 
+faces_array is an array of face arrays. Each set of faces is shown in a different color. For Example: [snub_dodecahedron_triangle_faces, snub_dodecahedron_pentagon_faces]
+*/
 module show_polyhedron(vertices, edges, adjacentVertices, facesArray) {
    
   echo(vertices=len(vertices));
@@ -175,16 +224,25 @@ module show_polyhedron(vertices, edges, adjacentVertices, facesArray) {
       color(faceColorArray[i])
       show_faces(vertices, facesArray[i]);
     
-  if(polyhedraDisplayMode=="enumerated" || polyhedraDisplayMode=="solid")
-  color(polyhedraSolidColor)
-  scale(0.8)
-  polyhedron(points=vertices,faces=concat_all(facesArray));
+  if(polyhedraDisplayMode=="enumerated") {
+      r = norm(vertices[0]);
+      s = (r-0.1)/r;
+      color(polyhedraSolidColor)
+      scale(s)
+      polyhedron(points=vertices,faces=concat_all(facesArray));
+  } else if (polyhedraDisplayMode=="solid") {
+      color(polyhedraSolidColor)
+      polyhedron(points=vertices,faces=concat_all(facesArray));
+  }
 }
 
 /**********************/
 /**Polyhedra examples**/
 /**********************/
 
+/*
+an arrangement of all polyhedra
+*/
 module polyhedra_layout() {
     translate([0,-11,0]){  
         translate([6,0,0])
@@ -235,6 +293,9 @@ module polyhedra_layout() {
      }
 }
 
+/*
+each polyhedron 
+*/
 module tetrahedron() {
     echo("tetrahedron");
     show_polyhedron(
@@ -430,4 +491,3 @@ module truncated_icosidodecahedron() {
         truncated_icosidodecahedron_decagon_faces]);
  
 }
-

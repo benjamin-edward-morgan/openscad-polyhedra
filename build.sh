@@ -74,9 +74,9 @@ ALLSHAPES=("tetrahedron" "octahedron" "hexahedron" "icosahedron" "dodecahedron" 
 
 for SHAPE in ${ALLSHAPES[@]}
 do
-  echo $SHAPE
-  render_stl $SHAPE "wireframe"
-  render_stl $SHAPE "solid"
+ echo $SHAPE
+ # render_stl $SHAPE "wireframe"
+ render_stl $SHAPE "solid"
 done
 
 #for SHAPE in ${ALLSHAPES[@]}
@@ -86,10 +86,5 @@ done
 #done
 
 #for SHAPE in "layout"; do
-# render_png $SHAPE "enumerated"
+#render_png $SHAPE "enumerated"
 #done
-
-
-##for SHAPE in "all"; do
-##  render_stl $SHAPE
-##done
