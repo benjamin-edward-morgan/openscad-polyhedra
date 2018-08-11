@@ -47,6 +47,9 @@ polyhedraDisplayShape = "layout";
 //polyhedraDisplayShape = "truncated_dodecahedron";
 //polyhedraDisplayShape = "truncated_icosidodecahedron";
 
+//Conditional scaling
+polyhedraNoScale=false; 
+//polyhedraNoScale=true;
 
 if(polyhedraDisplayShape=="layout")
     conditional_scale(3) polyhedra_layout();
@@ -154,13 +157,13 @@ module sample_face(i,n,r=3,h=0.1,t=0.1) {
 /***************************************/
 
 /*
-applies a scale transformation to children only in "enumerated" mode
+applies a scale transformation to children only if noScale is false
 */
 module conditional_scale(x) {
-    if(polyhedraDisplayMode=="enumerated")
-        scale(x) children();
-    else
+    if(polyhedraNoScale)
         children();
+    else
+        scale(x) children();
 }
 
 /*
